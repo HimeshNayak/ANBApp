@@ -8,7 +8,7 @@ import '../widgets/commonWidgets.dart';
 
 class HomeUser extends StatelessWidget {
   final Auth auth;
-  final User user;
+  final UserData user;
   HomeUser({required this.auth, required this.user});
   @override
   Widget build(BuildContext context) {

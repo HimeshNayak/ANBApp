@@ -7,7 +7,7 @@ import '../widgets/commonWidgets.dart';
 
 class HomeAdmin extends StatelessWidget {
   final Auth auth;
-  final User user;
+  final UserData user;
   HomeAdmin({required this.auth, required this.user});
   @override
   Widget build(BuildContext context) {

@@ -9,11 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:swinger_iot/main.dart';
+import 'package:swinger_iot/services/root.dart';
+import 'package:swinger_iot/services/auth.dart';
+import 'package:swinger_iot/models/user.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(RootPage(auth: new Auth(), user: new User()));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

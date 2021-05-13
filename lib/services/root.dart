@@ -10,7 +10,7 @@ import 'auth.dart';
 
 class RootPage extends StatelessWidget {
   final Auth auth;
-  final User user;
+  final UserData user;
   RootPage({required this.auth, required this.user});
   @override
   Widget build(BuildContext context) {

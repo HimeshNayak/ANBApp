@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class User {
+class UserData {
   String? userName, email, uid, type;
-  User() {
+  UserData() {
     getUserDetails();
   }
   Future<void> getUserDetails() async {
