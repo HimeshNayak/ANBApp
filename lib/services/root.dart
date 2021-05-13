@@ -20,8 +20,8 @@ class RootPage extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder<String>(
-          future: auth.getUser(),
+      home: FutureBuilder<String?>(
+          future: user.getType(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data == 'USER') {
@@ -36,7 +36,7 @@ class RootPage extends StatelessWidget {
                         'Some problem accessing the user. Close app and try again!');
               }
             }
-            return buildingScreenWidget(context, Colors.white, Colors.blue);
+            return buildingScreenWidget(context, Colors.white);
           }),
     );
   }

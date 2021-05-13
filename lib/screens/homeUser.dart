@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/user.dart';
-import '../screens/DoctorProfile.dart';
+import '../screens/doctorProfile.dart';
 import '../screens/chatScreen.dart';
 import '../services/auth.dart';
 import '../widgets/commonWidgets.dart';
