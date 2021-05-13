@@ -1,11 +1,11 @@
-import 'package:flutter/foundation.dart';
-
 class User {
-  // TODO change var to strings and implement accordingly
-  var userName, email, uid;
+  String userName = '', email = '', uid = '';
+  var type;
   User() {
-    this.userName = '';
-    this.email = '';
-    this.uid = '';
+    getUserDetails();
+  }
+  Future<void> getUserDetails() async {
+    type = 'ADMIN';
+    return;
   }
 }

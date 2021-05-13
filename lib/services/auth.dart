@@ -1,5 +1,7 @@
+import '../models/user.dart';
+
 class Auth {
-  Future<bool> getUser() async {
-    return true;
+  Future<String> getUser() async {
+    return User().type;
   }
 }

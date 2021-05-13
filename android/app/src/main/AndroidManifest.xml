@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.himeshnayak.swinger_iot">
    <application
-        android:label="swinger_iot"
+        android:label="SWINGER IOT"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
