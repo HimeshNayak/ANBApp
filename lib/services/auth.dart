@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,6 +35,20 @@ class Auth {
         _prefs.setString('photoUrl', user.photoURL.toString());
         _prefs.setString('type', 'USER');
       });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get()
+          .then((value) {
+        if (!value.exists) {
+          FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+            'username': user.displayName.toString(),
+            'email': user.email.toString(),
+            'uid': user.uid.toString(),
+            'photoUrl': user.photoURL.toString()
+          });
+        }
+      });
     }
     return user;
   }
@@ -52,6 +67,21 @@ class Auth {
         _prefs.setString('photoUrl',
             'https://webstockreview.net/images/clipart-doctor-person-1.png');
         _prefs.setString('type', 'ADMIN');
+      });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get()
+          .then((value) {
+        if (!value.exists) {
+          FirebaseFirestore.instance.collection('admins').doc(user.uid).set({
+            'username': 'Doctor Admin',
+            'email': user.email.toString(),
+            'uid': user.uid.toString(),
+            'photoUrl':
+                'https://webstockreview.net/images/clipart-doctor-person-1.png'
+          });
+        }
       });
     }
     return user;
