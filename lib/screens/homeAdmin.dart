@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../models/user.dart';
@@ -46,34 +47,98 @@ class _HomeAdminState extends State<HomeAdmin> {
         ],
       ),
       body: SafeArea(
-        child: bgWidget(
-          context: context,
-          child: Column(
-            children: [
-              ProfileTile(
-                user: widget.user,
-                function: () {},
+        child: Stack(
+          children: [
+            bgWidget(
+              context: context,
+              child: Column(
+                children: [
+                  ProfileTile(
+                    user: widget.user,
+                    function: () {},
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Your Patients',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          OutlinedButton(
+                            onPressed: null,
+                            child: Text('View Requests'),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 2, child: Container(color: Colors.blueGrey)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  FutureBuilder(
+                      future: FirebaseFirestore.instance
+                          .collection('admins')
+                          .doc(widget.user.uid)
+                          .get(),
+                      builder:
+                          (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          Map<String, dynamic> doctorMap =
+                              snapshot.data?.data() as Map<String, dynamic>;
+                          List<dynamic> patientsUidList = doctorMap['patients'];
+                          return patientsList(patientsUidList);
+                        }
+                        return Center(child: CircularProgressIndicator());
+                      }),
+                ],
               ),
-              ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, i) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PatientProfile()));
-                          },
-                          child: longButton(
-                              Colors.greenAccent, 'Patient ${i + 1}')),
-                    );
-                  }),
-            ],
-          ),
+            ),
+            overlayProgress(context: context, visible: isLoading),
+          ],
         ),
       ),
     );
+  }
+
+  Widget patientsList(List<dynamic> list) {
+    if (list.length != 0)
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: list.length,
+        itemBuilder: (context, item) {
+          return FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(list[item])
+                  .get(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snap) {
+                if (snap.hasData) {
+                  Map<String, dynamic> userMap =
+                      snap.data?.data() as Map<String, dynamic>;
+                  UserData userData = new UserData();
+                  userData.setFields(userMap);
+                  return ProfileTile(
+                    user: userData,
+                    function: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PatientProfile()));
+                    },
+                  );
+                }
+                return Center(child: CircularProgressIndicator());
+              });
+        },
+      );
+    else
+      return Container(
+        child: Text('No Patient Added!'),
+      );
   }
 }
