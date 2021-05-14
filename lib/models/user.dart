@@ -7,6 +7,13 @@ class UserData {
     getUserDetails();
   }
 
+  UserData.setFields(Map<String, dynamic> map) {
+    uid = map['uid'];
+    userName = map['username'];
+    email = map['email'];
+    photoUrl = map['photoUrl'];
+  }
+
   Future<void> getUserDetails() async {
     await SharedPreferences.getInstance().then((_prefs) {
       userName = _prefs.getString('userName');
@@ -24,10 +31,8 @@ class UserData {
     return _type;
   }
 
-  void setFields(Map<String, dynamic> map) {
-    uid = map['uid'];
-    userName = map['username'];
-    email = map['email'];
-    photoUrl = map['photoUrl'];
-  }
+  // UserData setFields(Map<String, dynamic> map) {
+  //
+  //   return this;
+  // }
 }

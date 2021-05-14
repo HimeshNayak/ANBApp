@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:location/location.dart';
 
 import '../models/user.dart';
 import '../screens/doctorProfile.dart';
@@ -19,6 +20,7 @@ class HomeUser extends StatefulWidget {
 
 class _HomeUserState extends State<HomeUser> {
   bool isLoading = false;
+  Location location = new Location();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,15 +65,6 @@ class _HomeUserState extends State<HomeUser> {
                     height: 20,
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChatScreen()));
-                    },
-                    child: longButton(Colors.redAccent, 'Send SOS message'),
-                  ),
-                  TextButton(
                     onPressed: null,
                     child: longButton(Colors.greenAccent, 'Open Distance Page'),
                   ),
@@ -111,17 +104,65 @@ class _HomeUserState extends State<HomeUser> {
                                   if (snap.hasData) {
                                     Map<String, dynamic> doctorMap = snap.data
                                         ?.data() as Map<String, dynamic>;
-                                    UserData doctorData = new UserData();
-                                    doctorData.setFields(doctorMap);
-                                    return ProfileTile(
-                                      user: doctorData,
-                                      function: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DoctorProfile()));
-                                      },
+                                    UserData doctorData =
+                                        new UserData.setFields(doctorMap);
+                                    return Column(
+                                      children: [
+                                        ProfileTile(
+                                          user: doctorData,
+                                          function: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DoctorProfile()));
+                                          },
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+                                            await location
+                                                .getLocation()
+                                                .then((value) {
+                                              double? latitude = value.latitude;
+                                              double? longitude =
+                                                  value.longitude;
+                                              FirebaseFirestore.instance
+                                                  .collection('admins')
+                                                  .doc(doctorUid)
+                                                  .collection('chats')
+                                                  .doc(widget.user.uid)
+                                                  .set({
+                                                'chats': FieldValue.arrayUnion([
+                                                  {
+                                                    'timestamp': DateTime.now(),
+                                                    'latitude': latitude,
+                                                    'longitude': longitude
+                                                  }
+                                                ])
+                                              }).whenComplete(() {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ChatScreen(
+                                                      user: widget.user,
+                                                      otherUser: doctorData,
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                            });
+                                          },
+                                          child: longButton(Colors.redAccent,
+                                              'Send SOS message'),
+                                        ),
+                                      ],
                                     );
                                   }
                                   return Center(

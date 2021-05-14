@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/user.dart';
 import '../screens/patientProfile.dart';
+import '../screens/chatScreen.dart';
 import '../services/auth.dart';
 import '../services/root.dart';
 import '../widgets/commonWidgets.dart';
@@ -120,16 +121,31 @@ class _HomeAdminState extends State<HomeAdmin> {
                 if (snap.hasData) {
                   Map<String, dynamic> userMap =
                       snap.data?.data() as Map<String, dynamic>;
-                  UserData userData = new UserData();
-                  userData.setFields(userMap);
-                  return ProfileTile(
-                    user: userData,
-                    function: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PatientProfile()));
-                    },
+                  UserData userData = new UserData.setFields(userMap);
+                  return Column(
+                    children: [
+                      ProfileTile(
+                        user: userData,
+                        function: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PatientProfile()));
+                        },
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChatScreen(
+                                        user: widget.user,
+                                        otherUser: userData,
+                                      )));
+                        },
+                        child: longButton(Colors.greenAccent, 'Messages'),
+                      ),
+                    ],
                   );
                 }
                 return Center(child: CircularProgressIndicator());
