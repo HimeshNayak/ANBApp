@@ -5,6 +5,7 @@ import '../screens/patientProfile.dart';
 import '../services/auth.dart';
 import '../services/root.dart';
 import '../widgets/commonWidgets.dart';
+import '../widgets/profileTile.dart';
 
 class HomeAdmin extends StatefulWidget {
   final Auth auth;
@@ -47,22 +48,30 @@ class _HomeAdminState extends State<HomeAdmin> {
       body: SafeArea(
         child: bgWidget(
           context: context,
-          child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, i) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PatientProfile()));
-                      },
-                      child:
-                          longButton(Colors.greenAccent, 'Patient ${i + 1}')),
-                );
-              }),
+          child: Column(
+            children: [
+              ProfileTile(
+                user: widget.user,
+                function: () {},
+              ),
+              ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (context, i) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PatientProfile()));
+                          },
+                          child: longButton(
+                              Colors.greenAccent, 'Patient ${i + 1}')),
+                    );
+                  }),
+            ],
+          ),
         ),
       ),
     );

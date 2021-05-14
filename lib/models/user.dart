@@ -2,9 +2,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData {
   String? userName, email, uid, photoUrl, type;
+
   UserData() {
     getUserDetails();
   }
+
   Future<void> getUserDetails() async {
     await SharedPreferences.getInstance().then((_prefs) {
       userName = _prefs.getString('userName');
@@ -20,5 +22,12 @@ class UserData {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? _type = prefs.getString('type');
     return _type;
+  }
+
+  void setFields(Map<String, dynamic> map) {
+    uid = map['uid'];
+    userName = map['username'];
+    email = map['email'];
+    photoUrl = map['photoUrl'];
   }
 }
