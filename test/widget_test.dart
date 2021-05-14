@@ -16,7 +16,7 @@ import 'package:swinger_iot/models/user.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(RootPage(auth: new Auth(), user: new User()));
+    await tester.pumpWidget(RootPage(auth: new Auth(), user: new UserData()));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

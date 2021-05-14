@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData {
-  String? userName, email, uid, type;
+  String? userName, email, uid, photoUrl, type;
   UserData() {
     getUserDetails();
   }
@@ -10,12 +10,15 @@ class UserData {
       userName = _prefs.getString('userName');
       email = _prefs.getString('email');
       uid = _prefs.getString('uid');
+      photoUrl = _prefs.getString('photoUrl');
       type = _prefs.getString('type') ?? 'LOGIN';
     });
     return;
   }
 
   Future<String?> getType() async {
-    return type;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? _type = prefs.getString('type');
+    return _type;
   }
 }

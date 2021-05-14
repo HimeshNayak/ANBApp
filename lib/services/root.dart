@@ -29,7 +29,7 @@ class RootPage extends StatelessWidget {
               } else if (snapshot.data == 'ADMIN') {
                 return HomeAdmin(auth: auth, user: user);
               } else if (snapshot.data == 'LOGIN') {
-                return LoginPage(auth: auth);
+                return LoginPage(auth: auth, userData: user);
               } else {
                 return ErrorPage(
                     message:

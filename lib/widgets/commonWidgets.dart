@@ -37,3 +37,15 @@ Widget bgWidget({required Widget child, required BuildContext context}) {
       ),
       child: child);
 }
+
+Widget overlayProgress({required BuildContext context, required bool visible}) {
+  return Visibility(
+    visible: visible,
+    child: Container(
+      color: Colors.white70,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Center(child: CircularProgressIndicator()),
+    ),
+  );
+}
