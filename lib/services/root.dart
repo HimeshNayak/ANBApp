@@ -36,7 +36,7 @@ class RootPage extends StatelessWidget {
                         'Some problem accessing the user. Close app and try again!');
               }
             }
-            return buildingScreenWidget(context, Colors.white);
+            return LoginPage(auth: auth, userData: user);
           }),
     );
   }

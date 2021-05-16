@@ -62,7 +62,8 @@ class ChatScreen extends StatelessWidget {
         itemCount: chat.length,
         itemBuilder: (context, item) {
           int i = chat.length - item - 1;
-          return locationMessage(chat[i]);
+          return locationMessage(
+              context, chat[i], (user.type == chat[i]['sender']));
         },
       ),
     );

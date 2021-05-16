@@ -45,7 +45,8 @@ class Auth {
             'username': user.displayName.toString(),
             'email': user.email.toString(),
             'uid': user.uid.toString(),
-            'photoUrl': user.photoURL.toString()
+            'photoUrl': user.photoURL.toString(),
+            'doctorUid': ''
           });
         }
       });
@@ -69,7 +70,7 @@ class Auth {
         _prefs.setString('type', 'ADMIN');
       });
       await FirebaseFirestore.instance
-          .collection('users')
+          .collection('admins')
           .doc(user.uid)
           .get()
           .then((value) {
@@ -79,7 +80,8 @@ class Auth {
             'email': user.email.toString(),
             'uid': user.uid.toString(),
             'photoUrl':
-                'https://webstockreview.net/images/clipart-doctor-person-1.png'
+                'https://webstockreview.net/images/clipart-doctor-person-1.png',
+            'patients': []
           });
         }
       });

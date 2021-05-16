@@ -82,20 +82,21 @@ class _HomeAdminState extends State<HomeAdmin> {
                     height: 10,
                   ),
                   FutureBuilder(
-                      future: FirebaseFirestore.instance
-                          .collection('admins')
-                          .doc(widget.user.uid)
-                          .get(),
-                      builder:
-                          (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          Map<String, dynamic> doctorMap =
-                              snapshot.data?.data() as Map<String, dynamic>;
-                          List<dynamic> patientsUidList = doctorMap['patients'];
-                          return patientsList(patientsUidList);
-                        }
-                        return Center(child: CircularProgressIndicator());
-                      }),
+                    future: FirebaseFirestore.instance
+                        .collection('admins')
+                        .doc(widget.user.uid)
+                        .get(),
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasData) {
+                        Map<String, dynamic> doctorMap =
+                            snapshot.data?.data() as Map<String, dynamic>;
+                        List<dynamic> patientsUidList = doctorMap['patients'];
+                        return patientsList(patientsUidList);
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    },
+                  ),
                 ],
               ),
             ),
@@ -113,43 +114,47 @@ class _HomeAdminState extends State<HomeAdmin> {
         itemCount: list.length,
         itemBuilder: (context, item) {
           return FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(list[item])
-                  .get(),
-              builder: (context, AsyncSnapshot<DocumentSnapshot> snap) {
-                if (snap.hasData) {
-                  Map<String, dynamic> userMap =
-                      snap.data?.data() as Map<String, dynamic>;
-                  UserData userData = new UserData.setFields(userMap);
-                  return Column(
-                    children: [
-                      ProfileTile(
-                        user: userData,
-                        function: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PatientProfile()));
-                        },
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChatScreen(
-                                        user: widget.user,
-                                        otherUser: userData,
-                                      )));
-                        },
-                        child: longButton(Colors.greenAccent, 'Messages'),
-                      ),
-                    ],
-                  );
-                }
-                return Center(child: CircularProgressIndicator());
-              });
+            future: FirebaseFirestore.instance
+                .collection('users')
+                .doc(list[item])
+                .get(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snap) {
+              if (snap.hasData) {
+                Map<String, dynamic> userMap =
+                    snap.data?.data() as Map<String, dynamic>;
+                UserData userData = new UserData.setFields(userMap);
+                return Column(
+                  children: [
+                    ProfileTile(
+                      user: userData,
+                      function: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PatientProfile()));
+                      },
+                    ),
+                    longButton(
+                      context: context,
+                      text: 'Messages',
+                      function: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatScreen(
+                              user: widget.user,
+                              otherUser: userData,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            },
+          );
         },
       );
     else

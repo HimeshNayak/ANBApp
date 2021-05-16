@@ -11,16 +11,20 @@ Widget buildingScreenWidget(BuildContext context, Color bgColor) {
   );
 }
 
-Widget longButton(Color color, String text) {
-  return Container(
-    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-    child: Text(
-      text,
-      style: TextStyle(color: Colors.white, fontSize: 20),
-    ),
-    decoration: BoxDecoration(
-      color: color,
-      borderRadius: BorderRadius.circular(10),
+Widget longButton(
+    {required BuildContext context,
+    required String text,
+    required Function function}) {
+  return OutlinedButton(
+    onPressed: () {
+      function();
+    },
+    child: Container(
+      width: MediaQuery.of(context).size.width,
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+      ),
     ),
   );
 }

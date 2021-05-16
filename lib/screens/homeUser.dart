@@ -60,13 +60,17 @@ class _HomeUserState extends State<HomeUser> {
                     user: widget.user,
                     function: () {},
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   SizedBox(height: 2, child: Container(color: Colors.blueGrey)),
                   SizedBox(
                     height: 20,
                   ),
-                  TextButton(
-                    onPressed: null,
-                    child: longButton(Colors.greenAccent, 'Open Distance Page'),
+                  longButton(
+                    context: context,
+                    function: () {},
+                    text: 'Open Distance Page',
                   ),
                   Align(
                     alignment: Alignment.topLeft,
@@ -118,8 +122,9 @@ class _HomeUserState extends State<HomeUser> {
                                                         DoctorProfile()));
                                           },
                                         ),
-                                        TextButton(
-                                          onPressed: () async {
+                                        longButton(
+                                          context: context,
+                                          function: () async {
                                             setState(() {
                                               isLoading = true;
                                             });
@@ -139,7 +144,8 @@ class _HomeUserState extends State<HomeUser> {
                                                   {
                                                     'timestamp': DateTime.now(),
                                                     'latitude': latitude,
-                                                    'longitude': longitude
+                                                    'longitude': longitude,
+                                                    'sender': 'USER',
                                                   }
                                                 ])
                                               }).whenComplete(() {
@@ -159,8 +165,21 @@ class _HomeUserState extends State<HomeUser> {
                                               });
                                             });
                                           },
-                                          child: longButton(Colors.redAccent,
-                                              'Send SOS message'),
+                                          text: 'Send SOS message',
+                                        ),
+                                        longButton(
+                                          context: context,
+                                          function: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ChatScreen(
+                                                            user: widget.user,
+                                                            otherUser:
+                                                                doctorData)));
+                                          },
+                                          text: 'View Chats',
                                         ),
                                       ],
                                     );
@@ -175,8 +194,7 @@ class _HomeUserState extends State<HomeUser> {
                                   Text('No doctor added!'),
                                   TextButton(
                                     onPressed: null,
-                                    child: longButton(
-                                        Colors.greenAccent, 'Add Doctor'),
+                                    child: Text('Add Doctor'),
                                   )
                                 ],
                               ),
