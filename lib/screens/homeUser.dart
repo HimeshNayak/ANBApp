@@ -146,6 +146,7 @@ class _HomeUserState extends State<HomeUser> {
                                                     'latitude': latitude,
                                                     'longitude': longitude,
                                                     'sender': 'USER',
+                                                    'type': 'location',
                                                   }
                                                 ])
                                               }).whenComplete(() {
