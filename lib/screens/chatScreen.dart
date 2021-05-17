@@ -15,7 +15,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool showOptions = false;
-
+  TextEditingController messageController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,14 +28,6 @@ class _ChatScreenState extends State<ChatScreen> {
           SizedBox(width: 5),
           Text(widget.otherUser.userName.toString())
         ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: (showOptions) ? Icon(Icons.clear) : Icon(Icons.add),
-        onPressed: () {
-          setState(() {
-            showOptions = !showOptions;
-          });
-        },
       ),
       body: SafeArea(
         child: Stack(
@@ -64,16 +56,118 @@ class _ChatScreenState extends State<ChatScreen> {
                   }),
             ),
             Positioned(
-              bottom: 10,
+              bottom: 0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blue, width: 1),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width - 130,
+                      child: TextField(
+                        controller: messageController,
+                        decoration: InputDecoration(
+                          hintText: 'Enter Text',
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      iconSize: 20,
+                      icon: Icon(Icons.send, color: Colors.blue),
+                      onPressed: () {
+                        if (messageController.text.isNotEmpty) {
+                          if (widget.user.type == 'ADMIN') {
+                            FirebaseFirestore.instance
+                                .collection('admins')
+                                .doc(widget.user.uid)
+                                .collection('chats')
+                                .doc(widget.otherUser.uid)
+                                .update({
+                              'chats': FieldValue.arrayUnion([
+                                {
+                                  'timestamp': DateTime.now(),
+                                  'text': messageController.text.toString(),
+                                  'sender': 'ADMIN',
+                                  'type': 'text',
+                                }
+                              ])
+                            }).whenComplete(
+                              () => setState(
+                                () {
+                                  showOptions = false;
+                                  messageController.clear();
+                                },
+                              ),
+                            );
+                          } else if (widget.user.type == 'USER') {
+                            FirebaseFirestore.instance
+                                .collection('admins')
+                                .doc(widget.otherUser.uid)
+                                .collection('chats')
+                                .doc(widget.user.uid)
+                                .update({
+                              'chats': FieldValue.arrayUnion([
+                                {
+                                  'timestamp': DateTime.now(),
+                                  'text': messageController.text.toString(),
+                                  'sender': 'USER',
+                                  'type': 'text',
+                                }
+                              ])
+                            }).whenComplete(
+                              () => setState(
+                                () {
+                                  showOptions = false;
+                                  messageController.clear();
+                                },
+                              ),
+                            );
+                          }
+                        } else {
+                          print('it is empty');
+                        }
+                      },
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.blue,
+                      ),
+                      child: IconButton(
+                        icon: (showOptions)
+                            ? Icon(Icons.clear, size: 20, color: Colors.white)
+                            : Icon(
+                                Icons.add,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                        onPressed: () {
+                          setState(() {
+                            showOptions = !showOptions;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 70,
               left: 10,
+              right: 10,
               child: Visibility(
                 visible: showOptions,
                 child: Container(
-                  width: MediaQuery.of(context).size.width - 100,
-                  height: MediaQuery.of(context).size.height * 0.50,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.30,
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
-                      color: Colors.white54,
+                      color: Colors.white70,
                       borderRadius: BorderRadius.circular(15)),
                   child: ListView.builder(
                     itemCount: chatOptions.length,
