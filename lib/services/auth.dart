@@ -46,7 +46,11 @@ class Auth {
             'email': user.email.toString(),
             'uid': user.uid.toString(),
             'photoUrl': user.photoURL.toString(),
-            'doctorUid': ''
+            'doctorUid': '',
+            'chatOptions': [
+              'Please send an ambulance ASAP!',
+              'I need a First Aid Now!'
+            ],
           });
         }
       });
@@ -81,7 +85,11 @@ class Auth {
             'uid': user.uid.toString(),
             'photoUrl':
                 'https://webstockreview.net/images/clipart-doctor-person-1.png',
-            'patients': []
+            'patients': [],
+            'chatOptions': [
+              'We are sending an Ambulance!',
+              'We are committed to help you in any way possible.'
+            ]
           });
         }
       });
