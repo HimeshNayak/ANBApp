@@ -12,6 +12,22 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        children: <Widget>[
+          TextField(
+            decoration: InputDecoration(hintText: widget.user.userName),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          OutlinedButton(
+            child: Text('Submit'),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
   }
 }
