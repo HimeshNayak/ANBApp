@@ -17,9 +17,10 @@ Widget spacingWidget(
           padding: EdgeInsets.all(10),
           child: widget,
           decoration: BoxDecoration(
-              color: Colors.white70,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.blueAccent, width: 1)),
+            color: Colors.white70,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.blueAccent, width: 1),
+          ),
         ),
         Visibility(
           visible: !myMessage,
@@ -44,7 +45,7 @@ Widget locationMessage(
         Text('Longitude: ${map['longitude']}'),
         Text(
           '${dateTime.hour}:${dateTime.minute}',
-        )
+        ),
       ],
     ),
   );

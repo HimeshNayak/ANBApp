@@ -12,7 +12,8 @@ class ErrorPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.network(
-                  'https://ipsrsolutions.com/uploads/2020/04/262-2622379_chow-big-data-analytics-png.jpg'),
+                'https://ipsrsolutions.com/uploads/2020/04/262-2622379_chow-big-data-analytics-png.jpg',
+              ),
               Padding(
                 padding: EdgeInsets.all(20),
                 child: Text(

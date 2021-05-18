@@ -22,8 +22,14 @@ class ProfileTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(user.userName.toString(), style: TextStyle(fontSize: 20)),
-              Text(user.email.toString(), style: TextStyle(fontSize: 12)),
+              Text(
+                user.userName.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                user.email.toString(),
+                style: TextStyle(fontSize: 12),
+              ),
               OutlinedButton(
                 onPressed: () {
                   function();

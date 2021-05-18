@@ -8,5 +8,10 @@ import 'services/auth.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(RootPage(auth: new Auth(), user: new UserData()));
+  runApp(
+    RootPage(
+      auth: new Auth(),
+      user: new UserData(),
+    ),
+  );
 }

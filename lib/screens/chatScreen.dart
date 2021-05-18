@@ -19,40 +19,49 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: <Widget>[
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            backgroundImage: NetworkImage(widget.otherUser.photoUrl.toString()),
-          ),
-          SizedBox(width: 5),
-          Text(widget.otherUser.userName.toString())
-        ]),
+        title: Row(
+          children: <Widget>[
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(
+                widget.otherUser.photoUrl.toString(),
+              ),
+            ),
+            SizedBox(width: 5),
+            Text(
+              widget.otherUser.userName.toString(),
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
         child: Stack(
           children: [
             Container(
               child: FutureBuilder(
-                  future: (widget.user.type == 'ADMIN')
-                      ? FirebaseFirestore.instance
-                          .collection('admins')
-                          .doc(widget.user.uid)
-                          .collection('chats')
-                          .doc(widget.otherUser.uid)
-                          .get()
-                      : FirebaseFirestore.instance
-                          .collection('admins')
-                          .doc(widget.otherUser.uid)
-                          .collection('chats')
-                          .doc(widget.user.uid)
-                          .get(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.hasData) {
-                      return chats(context,
-                          snapshot.data?.data() as Map<String, dynamic>);
-                    }
-                    return Center(child: CircularProgressIndicator());
-                  }),
+                future: (widget.user.type == 'ADMIN')
+                    ? FirebaseFirestore.instance
+                        .collection('admins')
+                        .doc(widget.user.uid)
+                        .collection('chats')
+                        .doc(widget.otherUser.uid)
+                        .get()
+                    : FirebaseFirestore.instance
+                        .collection('admins')
+                        .doc(widget.otherUser.uid)
+                        .collection('chats')
+                        .doc(widget.user.uid)
+                        .get(),
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    return chats(
+                        context, snapshot.data?.data() as Map<String, dynamic>);
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
             ),
             Positioned(
               bottom: 0,
@@ -85,16 +94,20 @@ class _ChatScreenState extends State<ChatScreen> {
                                 .doc(widget.user.uid)
                                 .collection('chats')
                                 .doc(widget.otherUser.uid)
-                                .update({
-                              'chats': FieldValue.arrayUnion([
-                                {
-                                  'timestamp': DateTime.now(),
-                                  'text': messageController.text.toString(),
-                                  'sender': 'ADMIN',
-                                  'type': 'text',
-                                }
-                              ])
-                            }).whenComplete(
+                                .update(
+                              {
+                                'chats': FieldValue.arrayUnion(
+                                  [
+                                    {
+                                      'timestamp': DateTime.now(),
+                                      'text': messageController.text.toString(),
+                                      'sender': 'ADMIN',
+                                      'type': 'text',
+                                    },
+                                  ],
+                                )
+                              },
+                            ).whenComplete(
                               () => setState(
                                 () {
                                   showOptions = false;
@@ -108,16 +121,20 @@ class _ChatScreenState extends State<ChatScreen> {
                                 .doc(widget.otherUser.uid)
                                 .collection('chats')
                                 .doc(widget.user.uid)
-                                .update({
-                              'chats': FieldValue.arrayUnion([
-                                {
-                                  'timestamp': DateTime.now(),
-                                  'text': messageController.text.toString(),
-                                  'sender': 'USER',
-                                  'type': 'text',
-                                }
-                              ])
-                            }).whenComplete(
+                                .update(
+                              {
+                                'chats': FieldValue.arrayUnion(
+                                  [
+                                    {
+                                      'timestamp': DateTime.now(),
+                                      'text': messageController.text.toString(),
+                                      'sender': 'USER',
+                                      'type': 'text',
+                                    },
+                                  ],
+                                )
+                              },
+                            ).whenComplete(
                               () => setState(
                                 () {
                                   showOptions = false;
@@ -138,16 +155,22 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       child: IconButton(
                         icon: (showOptions)
-                            ? Icon(Icons.clear, size: 20, color: Colors.white)
+                            ? Icon(
+                                Icons.clear,
+                                size: 20,
+                                color: Colors.white,
+                              )
                             : Icon(
                                 Icons.add,
                                 size: 20,
                                 color: Colors.white,
                               ),
                         onPressed: () {
-                          setState(() {
-                            showOptions = !showOptions;
-                          });
+                          setState(
+                            () {
+                              showOptions = !showOptions;
+                            },
+                          );
                         },
                       ),
                     ),
@@ -166,90 +189,33 @@ class _ChatScreenState extends State<ChatScreen> {
                   height: MediaQuery.of(context).size.height * 0.30,
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.circular(15)),
+                    color: Colors.white70,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   child: FutureBuilder(
-                      future: (widget.user.type == 'USER')
-                          ? FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(widget.user.uid)
-                              .get()
-                          : FirebaseFirestore.instance
-                              .collection('admins')
-                              .doc(widget.user.uid)
-                              .get(),
-                      builder:
-                          (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          Map<dynamic, dynamic> map =
-                              snapshot.data?.data() as Map<dynamic, dynamic>;
-                          List<dynamic> chatOptions = map['chatOptions'];
-                          chatOptions.add('Add Option');
-                          return ListView.builder(
-                            itemCount: chatOptions.length,
-                            itemBuilder: (context, item) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                      padding: EdgeInsets.all(15),
-                                      backgroundColor: Colors.white),
-                                  onPressed: () {
-                                    if (item != chatOptions.length - 1) {
-                                      print(
-                                          'option selected : ${chatOptions[item]}');
-                                      if (widget.user.type == 'ADMIN') {
-                                        FirebaseFirestore.instance
-                                            .collection('admins')
-                                            .doc(widget.user.uid)
-                                            .collection('chats')
-                                            .doc(widget.otherUser.uid)
-                                            .update({
-                                          'chats': FieldValue.arrayUnion([
-                                            {
-                                              'timestamp': DateTime.now(),
-                                              'text':
-                                                  chatOptions[item].toString(),
-                                              'sender': 'ADMIN',
-                                              'type': 'text',
-                                            }
-                                          ])
-                                        }).whenComplete(() => setState(() {
-                                                  showOptions = false;
-                                                }));
-                                      } else if (widget.user.type == 'USER') {
-                                        FirebaseFirestore.instance
-                                            .collection('admins')
-                                            .doc(widget.otherUser.uid)
-                                            .collection('chats')
-                                            .doc(widget.user.uid)
-                                            .update({
-                                          'chats': FieldValue.arrayUnion([
-                                            {
-                                              'timestamp': DateTime.now(),
-                                              'text':
-                                                  chatOptions[item].toString(),
-                                              'sender': 'USER',
-                                              'type': 'text',
-                                            }
-                                          ])
-                                        }).whenComplete(() => setState(() {
-                                                  showOptions = false;
-                                                }));
-                                      }
-                                    } else {
-                                      _showAddOptionDialog(context);
-                                    }
-                                  },
-                                  child: Text(chatOptions[item]),
-                                ),
-                              );
-                            },
-                          );
-                        }
-                        return Center(child: CircularProgressIndicator());
-                      }),
+                    future: (widget.user.type == 'USER')
+                        ? FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(widget.user.uid)
+                            .get()
+                        : FirebaseFirestore.instance
+                            .collection('admins')
+                            .doc(widget.user.uid)
+                            .get(),
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasData) {
+                        Map<dynamic, dynamic> map =
+                            snapshot.data?.data() as Map<dynamic, dynamic>;
+                        List<dynamic> chatOptions = map['chatOptions'];
+                        chatOptions.add('Add Option');
+                        return addOptionsWidget(context, chatOptions);
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -274,12 +240,96 @@ class _ChatScreenState extends State<ChatScreen> {
           int i = chat.length - item - 1;
           if (chat[i]['type'] == 'location')
             return locationMessage(
-                context, chat[i], (widget.user.type == chat[i]['sender']));
+              context,
+              chat[i],
+              (widget.user.type == chat[i]['sender']),
+            );
           else
             return textMessage(
-                context, chat[i], (widget.user.type == chat[i]['sender']));
+              context,
+              chat[i],
+              (widget.user.type == chat[i]['sender']),
+            );
         },
       ),
+    );
+  }
+
+  Widget addOptionsWidget(BuildContext context, List<dynamic> chatOptions) {
+    return ListView.builder(
+      itemCount: chatOptions.length,
+      itemBuilder: (context, item) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              padding: EdgeInsets.all(15),
+              backgroundColor: Colors.white,
+            ),
+            onPressed: () {
+              if (item != chatOptions.length - 1) {
+                print('option selected : ${chatOptions[item]}');
+                if (widget.user.type == 'ADMIN') {
+                  FirebaseFirestore.instance
+                      .collection('admins')
+                      .doc(widget.user.uid)
+                      .collection('chats')
+                      .doc(widget.otherUser.uid)
+                      .update(
+                    {
+                      'chats': FieldValue.arrayUnion(
+                        [
+                          {
+                            'timestamp': DateTime.now(),
+                            'text': chatOptions[item].toString(),
+                            'sender': 'ADMIN',
+                            'type': 'text',
+                          },
+                        ],
+                      ),
+                    },
+                  ).whenComplete(
+                    () => setState(
+                      () {
+                        showOptions = false;
+                      },
+                    ),
+                  );
+                } else if (widget.user.type == 'USER') {
+                  FirebaseFirestore.instance
+                      .collection('admins')
+                      .doc(widget.otherUser.uid)
+                      .collection('chats')
+                      .doc(widget.user.uid)
+                      .update(
+                    {
+                      'chats': FieldValue.arrayUnion(
+                        [
+                          {
+                            'timestamp': DateTime.now(),
+                            'text': chatOptions[item].toString(),
+                            'sender': 'USER',
+                            'type': 'text',
+                          },
+                        ],
+                      ),
+                    },
+                  ).whenComplete(
+                    () => setState(
+                      () {
+                        showOptions = false;
+                      },
+                    ),
+                  );
+                }
+              } else {
+                _showAddOptionDialog(context);
+              }
+            },
+            child: Text(chatOptions[item]),
+          ),
+        );
+      },
     );
   }
 
@@ -297,37 +347,38 @@ class _ChatScreenState extends State<ChatScreen> {
                 TextField(
                   controller: addController,
                   decoration: InputDecoration(
-                    hintText: 'Text',
-                    suffix: IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () {
-                        if (addController.text.isNotEmpty) {
-                          Map<String, dynamic> map = {
-                            'chatOptions': FieldValue.arrayUnion(
-                                [addController.text.toString()])
-                          };
-                          if (widget.user.type == 'USER') {
-                            FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(widget.user.uid)
-                                .update(map)
-                                .whenComplete(() => Navigator.pop(context));
-                          } else {
-                            FirebaseFirestore.instance
-                                .collection('admins')
-                                .doc(widget.user.uid)
-                                .update(map)
-                                .whenComplete(() => Navigator.pop(context));
-                          }
-                        }
-                      },
-                    ),
+                    hintText: 'Enter Message',
                   ),
                 ),
               ],
             ),
           ),
           actions: <Widget>[
+            TextButton(
+              child: Text('ADD'),
+              onPressed: () {
+                if (addController.text.isNotEmpty) {
+                  Map<String, dynamic> map = {
+                    'chatOptions': FieldValue.arrayUnion(
+                      [addController.text.toString()],
+                    ),
+                  };
+                  if (widget.user.type == 'USER') {
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(widget.user.uid)
+                        .update(map)
+                        .whenComplete(() => Navigator.pop(context));
+                  } else {
+                    FirebaseFirestore.instance
+                        .collection('admins')
+                        .doc(widget.user.uid)
+                        .update(map)
+                        .whenComplete(() => Navigator.pop(context));
+                  }
+                }
+              },
+            ),
             TextButton(
               child: Text('OKAY'),
               onPressed: () {

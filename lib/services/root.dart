@@ -21,23 +21,25 @@ class RootPage extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: FutureBuilder<String?>(
-          future: user.getType(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data == 'USER') {
-                return HomeUser(auth: auth, user: user);
-              } else if (snapshot.data == 'ADMIN') {
-                return HomeAdmin(auth: auth, user: user);
-              } else if (snapshot.data == 'LOGIN') {
-                return LoginPage(auth: auth, userData: user);
-              } else {
-                return ErrorPage(
-                    message:
-                        'Some problem accessing the user. Close app and try again!');
-              }
+        future: user.getType(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data == 'USER') {
+              return HomeUser(auth: auth, user: user);
+            } else if (snapshot.data == 'ADMIN') {
+              return HomeAdmin(auth: auth, user: user);
+            } else if (snapshot.data == 'LOGIN') {
+              return LoginPage(auth: auth, userData: user);
+            } else {
+              return ErrorPage(
+                message:
+                    'Some problem accessing the user. Close app and try again!',
+              );
             }
-            return LoginPage(auth: auth, userData: user);
-          }),
+          }
+          return LoginPage(auth: auth, userData: user);
+        },
+      ),
     );
   }
 }

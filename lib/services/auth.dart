@@ -28,32 +28,38 @@ class Auth {
 
     final User? user = userCredential.user;
     if (user != null) {
-      await SharedPreferences.getInstance().then((_prefs) {
-        _prefs.setString('userName', user.displayName.toString());
-        _prefs.setString('email', user.email.toString());
-        _prefs.setString('uid', user.uid.toString());
-        _prefs.setString('photoUrl', user.photoURL.toString());
-        _prefs.setString('type', 'USER');
-      });
+      await SharedPreferences.getInstance().then(
+        (_prefs) {
+          _prefs.setString('userName', user.displayName.toString());
+          _prefs.setString('email', user.email.toString());
+          _prefs.setString('uid', user.uid.toString());
+          _prefs.setString('photoUrl', user.photoURL.toString());
+          _prefs.setString('type', 'USER');
+        },
+      );
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .get()
-          .then((value) {
-        if (!value.exists) {
-          FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-            'username': user.displayName.toString(),
-            'email': user.email.toString(),
-            'uid': user.uid.toString(),
-            'photoUrl': user.photoURL.toString(),
-            'doctorUid': '',
-            'chatOptions': [
-              'Please send an ambulance ASAP!',
-              'I need a First Aid Now!'
-            ],
-          });
-        }
-      });
+          .then(
+        (value) {
+          if (!value.exists) {
+            FirebaseFirestore.instance.collection('users').doc(user.uid).set(
+              {
+                'username': user.displayName.toString(),
+                'email': user.email.toString(),
+                'uid': user.uid.toString(),
+                'photoUrl': user.photoURL.toString(),
+                'doctorUid': '',
+                'chatOptions': [
+                  'Please send an ambulance ASAP!',
+                  'I need a First Aid Now!'
+                ],
+              },
+            );
+          }
+        },
+      );
     }
     return user;
   }
@@ -65,34 +71,40 @@ class Auth {
     User? user = authCredential.user;
 
     if (user != null) {
-      await SharedPreferences.getInstance().then((_prefs) {
-        _prefs.setString('userName', 'Doctor Admin');
-        _prefs.setString('email', user.email.toString());
-        _prefs.setString('uid', user.uid.toString());
-        _prefs.setString('photoUrl',
-            'https://webstockreview.net/images/clipart-doctor-person-1.png');
-        _prefs.setString('type', 'ADMIN');
-      });
+      await SharedPreferences.getInstance().then(
+        (_prefs) {
+          _prefs.setString('userName', 'Doctor Admin');
+          _prefs.setString('email', user.email.toString());
+          _prefs.setString('uid', user.uid.toString());
+          _prefs.setString('photoUrl',
+              'https://webstockreview.net/images/clipart-doctor-person-1.png');
+          _prefs.setString('type', 'ADMIN');
+        },
+      );
       await FirebaseFirestore.instance
           .collection('admins')
           .doc(user.uid)
           .get()
-          .then((value) {
-        if (!value.exists) {
-          FirebaseFirestore.instance.collection('admins').doc(user.uid).set({
-            'username': 'Doctor Admin',
-            'email': user.email.toString(),
-            'uid': user.uid.toString(),
-            'photoUrl':
-                'https://webstockreview.net/images/clipart-doctor-person-1.png',
-            'patients': [],
-            'chatOptions': [
-              'We are sending an Ambulance!',
-              'We are committed to help you in any way possible.'
-            ]
-          });
-        }
-      });
+          .then(
+        (value) {
+          if (!value.exists) {
+            FirebaseFirestore.instance.collection('admins').doc(user.uid).set(
+              {
+                'username': 'Doctor Admin',
+                'email': user.email.toString(),
+                'uid': user.uid.toString(),
+                'photoUrl':
+                    'https://webstockreview.net/images/clipart-doctor-person-1.png',
+                'patients': [],
+                'chatOptions': [
+                  'We are sending an Ambulance!',
+                  'We are committed to help you in any way possible.'
+                ],
+              },
+            );
+          }
+        },
+      );
     }
     return user;
   }

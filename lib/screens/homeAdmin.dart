@@ -27,24 +27,33 @@ class _HomeAdminState extends State<HomeAdmin> {
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
             onPressed: () {
-              setState(() {
-                isLoading = true;
-              });
-              widget.auth.signOut().whenComplete(() {
-                widget.user.getUserDetails().whenComplete(() {
-                  setState(() {
-                    isLoading = false;
-                  });
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              RootPage(auth: widget.auth, user: widget.user)),
-                      (route) => false);
-                });
-              });
+              setState(
+                () {
+                  isLoading = true;
+                },
+              );
+              widget.auth.signOut().whenComplete(
+                () {
+                  widget.user.getUserDetails().whenComplete(
+                    () {
+                      setState(
+                        () {
+                          isLoading = false;
+                        },
+                      );
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                RootPage(auth: widget.auth, user: widget.user),
+                          ),
+                          (route) => false);
+                    },
+                  );
+                },
+              );
             },
-          )
+          ),
         ],
       ),
       body: SafeArea(
@@ -72,12 +81,15 @@ class _HomeAdminState extends State<HomeAdmin> {
                           OutlinedButton(
                             onPressed: null,
                             child: Text('View Requests'),
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 2, child: Container(color: Colors.blueGrey)),
+                  SizedBox(
+                    height: 2,
+                    child: Container(color: Colors.blueGrey),
+                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -94,7 +106,9 @@ class _HomeAdminState extends State<HomeAdmin> {
                         List<dynamic> patientsUidList = doctorMap['patients'];
                         return patientsList(patientsUidList);
                       }
-                      return Center(child: CircularProgressIndicator());
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
                     },
                   ),
                 ],
@@ -129,9 +143,11 @@ class _HomeAdminState extends State<HomeAdmin> {
                       user: userData,
                       function: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PatientProfile()));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PatientProfile(),
+                          ),
+                        );
                       },
                     ),
                     longButton(
@@ -152,7 +168,9 @@ class _HomeAdminState extends State<HomeAdmin> {
                   ],
                 );
               }
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             },
           );
         },

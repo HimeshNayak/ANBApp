@@ -44,9 +44,11 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   children: [
-                    Text('SWINGER LAB',
-                        style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.bold)),
+                    Text(
+                      'SWINGER LAB',
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -70,41 +72,54 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor: Colors.white,
                       ),
                       onPressed: () {
-                        setState(() {
-                          isLoading = true;
-                        });
+                        setState(
+                          () {
+                            isLoading = true;
+                          },
+                        );
                         String email = emailController.text.toString();
                         String password = passwordController.text.toString();
                         if (email.isNotEmpty && password.isNotEmpty) {
                           widget.auth
                               .signInWithEmailAndPassword(email, password)
-                              .then((value) {
-                            if (value != null) {
-                              widget.userData.getUserDetails().whenComplete(() {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RootPage(
-                                            auth: widget.auth,
-                                            user: widget.userData)),
-                                    (route) => false);
-                              });
-                            } else {
-                              setState(() {
-                                isLoading = false;
-                              });
-                              print(
-                                  'there is no user present with this email password');
-                            }
-                          });
+                              .then(
+                            (value) {
+                              if (value != null) {
+                                widget.userData.getUserDetails().whenComplete(
+                                  () {
+                                    setState(
+                                      () {
+                                        isLoading = false;
+                                      },
+                                    );
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => RootPage(
+                                              auth: widget.auth,
+                                              user: widget.userData),
+                                        ),
+                                        (route) => false);
+                                  },
+                                );
+                              } else {
+                                setState(
+                                  () {
+                                    isLoading = false;
+                                  },
+                                );
+                                print(
+                                    'there is no user present with this email password');
+                              }
+                            },
+                          );
                         } else {
-                          setState(() {
-                            isLoading = false;
-                            print('Enter email and password!');
-                          });
+                          setState(
+                            () {
+                              isLoading = false;
+                              print('Enter email and password!');
+                            },
+                          );
                         }
                       },
                       child: Container(
@@ -123,36 +138,45 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor: Colors.white,
                       ),
                       onPressed: () {
-                        setState(() {
-                          isLoading = true;
-                        });
+                        setState(
+                          () {
+                            isLoading = true;
+                          },
+                        );
                         widget.auth.signInWithGoogle().then(
                           (value) {
                             if (value != null) {
-                              widget.userData.getUserDetails().whenComplete(() {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RootPage(
-                                        auth: widget.auth,
-                                        user: widget.userData,
+                              widget.userData.getUserDetails().whenComplete(
+                                () {
+                                  setState(
+                                    () {
+                                      isLoading = false;
+                                    },
+                                  );
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => RootPage(
+                                          auth: widget.auth,
+                                          user: widget.userData,
+                                        ),
                                       ),
-                                    ),
-                                    (route) => false);
-                              });
+                                      (route) => false);
+                                },
+                              );
                             } else {
-                              setState(() {
-                                isLoading = false;
-                              });
+                              setState(
+                                () {
+                                  isLoading = false;
+                                },
+                              );
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ErrorPage(
-                                        message:
-                                            'Could not Sign in. Please Try Again!'),
+                                      message:
+                                          'Could not Sign in. Please Try Again!',
+                                    ),
                                   ),
                                   (route) => false);
                             }

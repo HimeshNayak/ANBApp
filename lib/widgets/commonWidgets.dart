@@ -31,15 +31,16 @@ Widget longButton(
 
 Widget bgWidget({required Widget child, required BuildContext context}) {
   return Container(
-      margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(20),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-      ),
-      child: child);
+    margin: EdgeInsets.all(20),
+    padding: EdgeInsets.all(20),
+    width: MediaQuery.of(context).size.width,
+    height: MediaQuery.of(context).size.height,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      color: Colors.white,
+    ),
+    child: child,
+  );
 }
 
 Widget overlayProgress({required BuildContext context, required bool visible}) {
@@ -49,7 +50,9 @@ Widget overlayProgress({required BuildContext context, required bool visible}) {
       color: Colors.white70,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      child: Center(child: CircularProgressIndicator()),
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
     ),
   );
 }

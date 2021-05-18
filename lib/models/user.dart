@@ -30,9 +30,4 @@ class UserData {
     String? _type = prefs.getString('type');
     return _type;
   }
-
-  // UserData setFields(Map<String, dynamic> map) {
-  //
-  //   return this;
-  // }
 }
