@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/user.dart';
 import '../screens/errorPage.dart';
+import '../screens/register.dart';
 import '../services/auth.dart';
 import '../services/root.dart';
 import '../widgets/commonWidgets.dart';
@@ -129,6 +130,66 @@ class _LoginPageState extends State<LoginPage> {
                           textAlign: TextAlign.center,
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                      ),
+                      child: Text('Register as Admin'),
+                      onPressed: () {
+                        setState(
+                          () {
+                            isLoading = true;
+                          },
+                        );
+                        String email = emailController.text.toString();
+                        String password = passwordController.text.toString();
+                        if (email.isNotEmpty && password.isNotEmpty) {
+                          widget.auth
+                              .createUserEmailPassword(email, password)
+                              .then(
+                            (value) {
+                              if (value != null) {
+                                widget.userData.getUserDetails().whenComplete(
+                                  () {
+                                    setState(
+                                      () {
+                                        isLoading = false;
+                                      },
+                                    );
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => RegisterScreen(
+                                              auth: widget.auth,
+                                              user: widget.userData),
+                                        ),
+                                        (route) => false);
+                                  },
+                                );
+                              } else {
+                                setState(
+                                  () {
+                                    isLoading = false;
+                                  },
+                                );
+                                print(
+                                    'some error occurred with this email password');
+                              }
+                            },
+                          );
+                        } else {
+                          setState(
+                            () {
+                              isLoading = false;
+                              print('Enter email and password!');
+                            },
+                          );
+                        }
+                      },
                     ),
                     SizedBox(
                       height: 20,

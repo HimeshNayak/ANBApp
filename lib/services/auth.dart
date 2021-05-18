@@ -71,9 +71,40 @@ class Auth {
     User? user = authCredential.user;
 
     if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('admins')
+          .doc(user.uid)
+          .get()
+          .then(
+        (value) async {
+          if (value.exists) {
+            Map<dynamic, dynamic>? map = value.data();
+            await SharedPreferences.getInstance().then(
+              (_prefs) {
+                if (map != null) {
+                  _prefs.setString('userName', map['username'].toString());
+                  _prefs.setString('email', user.email.toString());
+                  _prefs.setString('uid', user.uid.toString());
+                  _prefs.setString('photoUrl', map['photoUrl'].toString());
+                  _prefs.setString('type', 'ADMIN');
+                }
+              },
+            );
+          }
+        },
+      );
+    }
+    return user;
+  }
+
+  Future<User?> createUserEmailPassword(String email, String password) async {
+    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    User? user = userCredential.user;
+    if (user != null) {
       await SharedPreferences.getInstance().then(
         (_prefs) {
-          _prefs.setString('userName', 'Doctor Admin');
+          _prefs.setString('userName', 'Enter Name');
           _prefs.setString('email', user.email.toString());
           _prefs.setString('uid', user.uid.toString());
           _prefs.setString('photoUrl',
@@ -90,7 +121,7 @@ class Auth {
           if (!value.exists) {
             FirebaseFirestore.instance.collection('admins').doc(user.uid).set(
               {
-                'username': 'Doctor Admin',
+                'username': 'Enter Name',
                 'email': user.email.toString(),
                 'uid': user.uid.toString(),
                 'photoUrl':

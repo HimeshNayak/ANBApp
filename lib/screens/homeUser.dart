@@ -133,8 +133,8 @@ class _HomeUserState extends State<HomeUser> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                DoctorProfile(),
+                                            builder: (context) => DoctorProfile(
+                                                doctor: doctorData),
                                           ),
                                         );
                                       },
