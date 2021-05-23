@@ -4,8 +4,10 @@ import '../models/user.dart';
 import '../screens/errorPage.dart';
 import '../screens/register.dart';
 import '../services/auth.dart';
-import '../services/root.dart';
 import '../widgets/commonWidgets.dart';
+
+// ignore: import_of_legacy_library_into_null_safe
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   final Auth auth;

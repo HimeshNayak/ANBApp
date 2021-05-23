@@ -6,9 +6,11 @@ import '../models/user.dart';
 import '../screens/doctorProfile.dart';
 import '../screens/chatScreen.dart';
 import '../services/auth.dart';
-import '../services/root.dart';
 import '../widgets/commonWidgets.dart';
 import '../widgets/profileTile.dart';
+
+// ignore: import_of_legacy_library_into_null_safe
+import '../main.dart';
 
 class HomeUser extends StatefulWidget {
   final Auth auth;
