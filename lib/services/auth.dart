@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,17 +45,46 @@ class Auth {
           .then(
         (value) {
           if (!value.exists) {
-            FirebaseFirestore.instance.collection('users').doc(user.uid).set(
-              {
-                'username': user.displayName.toString(),
-                'email': user.email.toString(),
-                'uid': user.uid.toString(),
-                'photoUrl': user.photoURL.toString(),
-                'doctorUid': '',
-                'chatOptions': [
-                  'Please send an ambulance ASAP!',
-                  'I need a First Aid Now!'
-                ],
+            String? fcmToken;
+            FirebaseMessaging.instance.getToken().then(
+              (token) async {
+                fcmToken = token;
+              },
+            ).whenComplete(
+              () {
+                FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.uid)
+                    .set(
+                  {
+                    'username': user.displayName.toString(),
+                    'email': user.email.toString(),
+                    'uid': user.uid.toString(),
+                    'photoUrl': user.photoURL.toString(),
+                    'doctorUid': '',
+                    'chatOptions': [
+                      'Please send an ambulance ASAP!',
+                      'I need a First Aid Now!'
+                    ],
+                    'fcmToken': fcmToken
+                  },
+                );
+              },
+            );
+          } else {
+            String? fcmToken;
+            FirebaseMessaging.instance.getToken().then(
+              (token) async {
+                fcmToken = token;
+              },
+            ).whenComplete(
+              () => {
+                FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.uid)
+                    .update(
+                  {'fcmToken': fcmToken},
+                )
               },
             );
           }
@@ -90,6 +120,22 @@ class Auth {
                 }
               },
             );
+            String? fcmToken;
+            await FirebaseMessaging.instance.getToken().then(
+              (token) async {
+                print(token);
+                fcmToken = token;
+              },
+            ).whenComplete(
+              () {
+                FirebaseFirestore.instance
+                    .collection('admins')
+                    .doc(user.uid)
+                    .update(
+                  {'fcmToken': fcmToken},
+                );
+              },
+            );
           }
         },
       );
@@ -119,18 +165,31 @@ class Auth {
           .then(
         (value) {
           if (!value.exists) {
-            FirebaseFirestore.instance.collection('admins').doc(user.uid).set(
-              {
-                'username': 'Enter Name',
-                'email': user.email.toString(),
-                'uid': user.uid.toString(),
-                'photoUrl':
-                    'https://webstockreview.net/images/clipart-doctor-person-1.png',
-                'patients': [],
-                'chatOptions': [
-                  'We are sending an Ambulance!',
-                  'We are committed to help you in any way possible.'
-                ],
+            String? fcmToken;
+            FirebaseMessaging.instance.getToken().then(
+              (token) async {
+                fcmToken = token;
+              },
+            ).whenComplete(
+              () {
+                FirebaseFirestore.instance
+                    .collection('admins')
+                    .doc(user.uid)
+                    .set(
+                  {
+                    'username': 'Enter Name',
+                    'email': user.email.toString(),
+                    'uid': user.uid.toString(),
+                    'photoUrl':
+                        'https://webstockreview.net/images/clipart-doctor-person-1.png',
+                    'patients': [],
+                    'chatOptions': [
+                      'We are sending an Ambulance!',
+                      'We are committed to help you in any way possible.'
+                    ],
+                    'fcmToken': fcmToken
+                  },
+                );
               },
             );
           }
@@ -144,6 +203,10 @@ class Auth {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _prefs.clear();
     _prefs.setString('type', 'LOGIN');
+    String? uid = _auth.currentUser?.uid;
+    await FirebaseFirestore.instance.collection('admins').doc(uid).update(
+      {'fcmToken': ''},
+    );
     return await _auth.signOut();
   }
 
@@ -151,6 +214,10 @@ class Auth {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _prefs.clear();
     _prefs.setString('type', 'LOGIN');
+    String? uid = _auth.currentUser?.uid;
+    await FirebaseFirestore.instance.collection('users').doc(uid).update(
+      {'fcmToken': ''},
+    );
     _auth.signOut();
     googleSignIn.signOut();
   }
