@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../screens/mapScreen.dart';
+
 Widget spacingWidget(
     {required BuildContext context,
     required bool myMessage,
@@ -41,8 +43,20 @@ Widget locationMessage(
     myMessage: myMessage,
     widget: Column(
       children: <Widget>[
-        Text('Latitude : ${map['latitude']}'),
-        Text('Longitude: ${map['longitude']}'),
+        OutlinedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MapScreen(
+                  latitude: map['latitude'],
+                  longitude: map['longitude'],
+                ),
+              ),
+            );
+          },
+          child: Text('Show Directions'),
+        ),
         Text(
           '${dateTime.hour}:${dateTime.minute}',
         ),
