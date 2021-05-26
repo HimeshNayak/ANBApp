@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 import '../models/user.dart';
 import '../screens/doctorProfile.dart';
 import '../screens/chatScreen.dart';
+import '../screens/distanceScreen.dart';
 import '../services/auth.dart';
 import '../widgets/commonWidgets.dart';
 import '../widgets/profileTile.dart';
@@ -83,7 +84,14 @@ class _HomeUserState extends State<HomeUser> {
                   ),
                   longButton(
                     context: context,
-                    function: () {},
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DistanceScreen(),
+                        ),
+                      );
+                    },
                     text: 'Open Distance Page',
                   ),
                   Align(
