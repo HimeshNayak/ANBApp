@@ -19,6 +19,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        leadingWidth: 20,
         title: Row(
           children: <Widget>[
             CircleAvatar(
@@ -27,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 widget.otherUser.photoUrl.toString(),
               ),
             ),
-            SizedBox(width: 5),
+            SizedBox(width: 10),
             Text(
               widget.otherUser.userName.toString(),
             ),

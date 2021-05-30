@@ -101,6 +101,8 @@ class _RootPageState extends State<RootPage> {
       title: 'SWINGER IOT',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        primaryColor: Colors.greenAccent,
+        scaffoldBackgroundColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
       home: FutureBuilder<String>(
