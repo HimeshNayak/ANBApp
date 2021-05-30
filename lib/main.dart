@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:swinger_iot/widgets/commonWidgets.dart';
 
 import 'models/user.dart';
 import 'screens/login.dart';
@@ -110,7 +112,48 @@ class _RootPageState extends State<RootPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data == 'USER') {
-              return HomeUser(auth: widget.auth, user: widget.user);
+              return FutureBuilder<DocumentSnapshot>(
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(widget.user.uid)
+                    .get(),
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    Map<String, dynamic> userMap =
+                        snapshot.data?.data() as Map<String, dynamic>;
+                    String doctorUid = userMap['doctorUid'] ?? '';
+                    if (doctorUid.isNotEmpty)
+                      return FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('admins')
+                            .doc(doctorUid)
+                            .get(),
+                        builder:
+                            (context, AsyncSnapshot<DocumentSnapshot> snap) {
+                          if (snap.hasData) {
+                            Map<String, dynamic> doctorMap =
+                                snap.data?.data() as Map<String, dynamic>;
+                            UserData doctorData =
+                                new UserData.setFields(doctorMap);
+                            return HomeUser(
+                              auth: widget.auth,
+                              user: widget.user,
+                              doctor: doctorData,
+                            );
+                          }
+                          return buildingScreenWidget(context, Colors.white);
+                        },
+                      );
+                    else
+                      return HomeUser(
+                        auth: widget.auth,
+                        user: widget.user,
+                        doctor: UserData.setFields({}),
+                      );
+                  }
+                  return buildingScreenWidget(context, Colors.white);
+                },
+              );
             } else if (snapshot.data == 'ADMIN') {
               return HomeAdmin(auth: widget.auth, user: widget.user);
             } else if (snapshot.data == 'LOGIN') {
