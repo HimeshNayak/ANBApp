@@ -144,12 +144,12 @@ class _HomeAdminState extends State<HomeAdmin> {
                     ProfileTile(
                       user: userData,
                       function: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PatientProfile(),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => PatientProfile(),
+                        //   ),
+                        // );
                       },
                     ),
                     longButton(

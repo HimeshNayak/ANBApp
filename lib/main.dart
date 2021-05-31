@@ -122,6 +122,7 @@ class _RootPageState extends State<RootPage> {
                     Map<String, dynamic> userMap =
                         snapshot.data?.data() as Map<String, dynamic>;
                     String doctorUid = userMap['doctorUid'] ?? '';
+                    UserData userData = UserData.setFields(userMap);
                     if (doctorUid.isNotEmpty)
                       return FutureBuilder(
                         future: FirebaseFirestore.instance
@@ -137,7 +138,7 @@ class _RootPageState extends State<RootPage> {
                                 new UserData.setFields(doctorMap);
                             return HomeUser(
                               auth: widget.auth,
-                              user: widget.user,
+                              user: userData,
                               doctor: doctorData,
                             );
                           }

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swinger_iot/style/fonts.dart';
 
-Widget textfield1(controller, String hint) {
+Widget textFieldContainer({required Widget child}) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
     decoration: BoxDecoration(
@@ -12,13 +12,7 @@ Widget textfield1(controller, String hint) {
         Radius.circular(30),
       ),
     ),
-    child: TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: '$hint',
-      ),
-    ),
+    child: child,
   );
 }
 
@@ -68,4 +62,25 @@ Widget sosButton(String hint, Function next, Color color, context) {
           next();
         },
       ));
+}
+
+Widget loginBg({required BuildContext context, required Widget child}) {
+  return Container(
+    margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+    decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          offset: Offset(-5, 10),
+          color: Colors.greenAccent,
+          blurRadius: 10,
+        )
+      ],
+      color: Colors.white,
+      borderRadius: BorderRadius.all(
+        Radius.circular(30),
+      ),
+    ),
+    child: child,
+  );
 }
