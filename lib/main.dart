@@ -145,12 +145,14 @@ class _RootPageState extends State<RootPage> {
                           return buildingScreenWidget(context, Colors.white);
                         },
                       );
-                    else
+                    else {
+                      UserData docData = UserData.setFields({});
                       return HomeUser(
                         auth: widget.auth,
                         user: widget.user,
-                        doctor: UserData.setFields({}),
+                        doctor: docData,
                       );
+                    }
                   }
                   return buildingScreenWidget(context, Colors.white);
                 },

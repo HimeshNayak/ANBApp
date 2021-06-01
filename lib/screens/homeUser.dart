@@ -7,6 +7,7 @@ import 'package:swinger_iot/widgets/widgets.dart';
 
 import '../models/user.dart';
 import '../screens/chatScreen.dart';
+import '../screens/doctorListScreen.dart';
 import '../services/auth.dart';
 import '../widgets/commonWidgets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,7 +26,6 @@ class HomeUser extends StatefulWidget {
 
 class _HomeUserState extends State<HomeUser> {
   bool isLoading = false;
-  // Location location = new Location();
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +34,42 @@ class _HomeUserState extends State<HomeUser> {
         children: [
           Container(
             padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
-            child: (widget.doctor.uid == '')
-                ? Container(
-                    child: Column(
-                      children: <Widget>[
-                        Text('No doctor added!'),
-                        TextButton(
-                          onPressed: null,
-                          child: Text('Add Doctor'),
+            child: (widget.doctor.uid == null)
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: CircleAvatar(
+                          radius: 70,
+                          // backgroundImage:
+                          //     NetworkImage(widget.doctor.photoUrl!),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Center(
+                        child: Text(
+                          'No Doctor Added!',
+                          style: heading1Bl,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      button1('Add Doctor', () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DoctorListScreen(
+                              auth: widget.auth,
+                              userData: widget.user,
+                            ),
+                          ),
+                        );
+                      }, Colors.greenAccent, context),
+                    ],
                   )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
