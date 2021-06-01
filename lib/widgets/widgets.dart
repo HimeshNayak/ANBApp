@@ -17,7 +17,8 @@ Widget textFieldContainer({required Widget child}) {
 }
 
 Widget button1(String hint, Function next, Color color, context) {
-  return Container(
+  return TextButton(
+    child: Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
@@ -26,42 +27,44 @@ Widget button1(String hint, Function next, Color color, context) {
           Radius.circular(30),
         ),
       ),
-      child: InkWell(
-        child: Center(
-            child: Text(
+      child: Center(
+        child: Text(
           '$hint',
           style: heading2Wl,
-        )),
-        onTap: () {
-          next();
-        },
-      ));
+        ),
+      ),
+    ),
+    onPressed: () {
+      next();
+    },
+  );
 }
 
 Widget sosButton(String hint, Function next, Color color, context) {
-  return Container(
+  return TextButton(
+    child: Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.3,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: color,
       ),
-      child: InkWell(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: Center(
-            child: Text('$hint',
-                style: GoogleFonts.comfortaa(
-                    textStyle: TextStyle(
-                        fontSize: 40,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold))),
-          ),
+      child: Container(
+        padding: EdgeInsets.all(20),
+        child: Center(
+          child: Text('$hint',
+              style: GoogleFonts.comfortaa(
+                  textStyle: TextStyle(
+                      fontSize: 40,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold))),
         ),
-        onTap: () {
-          next();
-        },
-      ));
+      ),
+    ),
+    onPressed: () {
+      next();
+    },
+  );
 }
 
 Widget loginBg({required BuildContext context, required Widget child}) {

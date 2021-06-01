@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:swinger_iot/style/fonts.dart';
+import 'package:swinger_iot/widgets/widgets.dart';
 
 import '../models/user.dart';
 import '../screens/patientProfile.dart';
@@ -24,40 +26,40 @@ class _HomeAdminState extends State<HomeAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout, color: Colors.white),
-            onPressed: () {
-              setState(
-                () {
-                  isLoading = true;
-                },
-              );
-              widget.auth.signOut().whenComplete(
-                () {
-                  widget.user.getUserDetails().whenComplete(
-                    () {
-                      setState(
-                        () {
-                          isLoading = false;
-                        },
-                      );
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                RootPage(auth: widget.auth, user: widget.user),
-                          ),
-                          (route) => false);
-                    },
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   actions: [
+      //     IconButton(
+      //       icon: Icon(Icons.logout, color: Colors.white),
+      //       onPressed: () {
+      //         setState(
+      //           () {
+      //             isLoading = true;
+      //           },
+      //         );
+      //         widget.auth.signOut().whenComplete(
+      //           () {
+      //             widget.user.getUserDetails().whenComplete(
+      //               () {
+      //                 setState(
+      //                   () {
+      //                     isLoading = false;
+      //                   },
+      //                 );
+      //                 Navigator.pushAndRemoveUntil(
+      //                     context,
+      //                     MaterialPageRoute(
+      //                       builder: (context) =>
+      //                           RootPage(auth: widget.auth, user: widget.user),
+      //                     ),
+      //                     (route) => false);
+      //               },
+      //             );
+      //           },
+      //         );
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: SafeArea(
         child: Stack(
           children: [
@@ -65,35 +67,45 @@ class _HomeAdminState extends State<HomeAdmin> {
               context: context,
               child: Column(
                 children: [
-                  ProfileTile(
-                    user: widget.user,
-                    function: () {},
+                  //     ProfileTile(
+                  //       user: widget.user,
+                  //       function: () {},
+                  //     ),
+                  //     Align(
+                  //       alignment: Alignment.topLeft,
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Text(
+                  //               'Your Patients',
+                  //               style: TextStyle(fontSize: 15),
+                  //             ),
+                  //             OutlinedButton(
+                  //               onPressed: null,
+                  //               child: Text('View Requests'),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //
+                  SizedBox(
+                    height: 10,
                   ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0, bottom: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Your Patients',
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          OutlinedButton(
-                            onPressed: null,
-                            child: Text('View Requests'),
-                          ),
-                        ],
-                      ),
-                    ),
+                  Center(
+                    child: Text('Patients', style: heading1Bl),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   SizedBox(
                     height: 2,
                     child: Container(color: Colors.blueGrey),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   FutureBuilder(
                     future: FirebaseFirestore.instance
@@ -115,6 +127,28 @@ class _HomeAdminState extends State<HomeAdmin> {
                   ),
                 ],
               ),
+            ),
+            Positioned(
+              top: 10,
+              left: 10,
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PatientProfile(
+                          auth: widget.auth,
+                          user: widget.user,
+                        ),
+                      ),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
+                      widget.user.photoUrl.toString(),
+                    ),
+                  )),
             ),
             overlayProgress(context: context, visible: isLoading),
           ],
@@ -143,30 +177,18 @@ class _HomeAdminState extends State<HomeAdmin> {
                   children: [
                     ProfileTile(
                       user: userData,
-                      function: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => PatientProfile(),
-                        //   ),
-                        // );
-                      },
                     ),
-                    longButton(
-                      context: context,
-                      text: 'Messages',
-                      function: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatScreen(
-                              user: widget.user,
-                              otherUser: userData,
-                            ),
+                    button1('View Chats', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatScreen(
+                            user: widget.user,
+                            otherUser: userData,
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    }, Colors.greenAccent, context),
                   ],
                 );
               }
@@ -179,7 +201,10 @@ class _HomeAdminState extends State<HomeAdmin> {
       );
     else
       return Container(
-        child: Text('No Patient Added!'),
+        child: Text(
+          'No Patient Added!',
+          style: heading2Bl,
+        ),
       );
   }
 }

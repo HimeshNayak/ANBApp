@@ -12,9 +12,7 @@ import '../main.dart';
 class PatientProfile extends StatefulWidget {
   final Auth auth;
   final UserData user;
-  final UserData doctor;
-  PatientProfile(
-      {required this.auth, required this.user, required this.doctor});
+  PatientProfile({required this.auth, required this.user});
 
   @override
   _PatientProfileState createState() => _PatientProfileState();

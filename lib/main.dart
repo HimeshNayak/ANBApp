@@ -158,7 +158,18 @@ class _RootPageState extends State<RootPage> {
                 },
               );
             } else if (snapshot.data == 'ADMIN') {
-              return HomeAdmin(auth: widget.auth, user: widget.user);
+              return FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('admins')
+                    .doc(widget.user.uid)
+                    .get(),
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snap) {
+                  if (snap.hasData) {
+                    return HomeAdmin(auth: widget.auth, user: widget.user);
+                  }
+                  return buildingScreenWidget(context, Colors.white);
+                },
+              );
             } else if (snapshot.data == 'LOGIN') {
               return LoginPage(auth: widget.auth, userData: widget.user);
             } else {

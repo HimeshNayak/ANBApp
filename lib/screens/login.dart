@@ -226,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Container(
                 width: size.width,
                 height:
-                    (pageIndex == 0) ? size.height * 0.5 : size.height * 0.65,
+                    (pageIndex == 0) ? size.height * 0.5 : size.height * 0.7,
                 child: (pageIndex == 0)
                     ? loginBg(
                         context: context,
@@ -277,15 +277,15 @@ class _LoginPageState extends State<LoginPage> {
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
-                                  // child: textFieldContainer(
-                                  child: TextField(
-                                    controller: emailController,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'EMAIL',
+                                  child: textFieldContainer(
+                                    child: TextField(
+                                      controller: emailController,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'EMAIL',
+                                      ),
                                     ),
                                   ),
-                                  // ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(

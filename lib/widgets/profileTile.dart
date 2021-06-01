@@ -4,12 +4,12 @@ import '../models/user.dart';
 
 class ProfileTile extends StatelessWidget {
   final UserData user;
-  final Function function;
-  ProfileTile({required this.user, required this.function});
+  ProfileTile({required this.user});
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -29,12 +29,6 @@ class ProfileTile extends StatelessWidget {
               Text(
                 user.email.toString(),
                 style: TextStyle(fontSize: 12),
-              ),
-              OutlinedButton(
-                onPressed: () {
-                  function();
-                },
-                child: Text('View Complete Profile'),
               ),
             ],
           ),

@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../models/user.dart';
 
-class DoctorProfile extends StatelessWidget {
+class DoctorProfile extends StatefulWidget {
   final UserData doctor;
   DoctorProfile({required this.doctor});
+  @override
+  _DoctorProfileState createState() => _DoctorProfileState();
+}
+
+class _DoctorProfileState extends State<DoctorProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,12 +22,13 @@ class DoctorProfile extends StatelessWidget {
               children: <Widget>[
                 CircleAvatar(
                   radius: 40,
-                  backgroundImage: NetworkImage(doctor.photoUrl.toString()),
+                  backgroundImage:
+                      NetworkImage(widget.doctor.photoUrl.toString()),
                   backgroundColor: Colors.white,
                 ),
                 SizedBox(width: 20),
                 Text(
-                  doctor.userName.toString(),
+                  widget.doctor.userName.toString(),
                   style: TextStyle(fontSize: 20),
                 ),
               ],
