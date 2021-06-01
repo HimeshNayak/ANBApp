@@ -149,7 +149,7 @@ class _RootPageState extends State<RootPage> {
                       UserData docData = UserData.setFields({});
                       return HomeUser(
                         auth: widget.auth,
-                        user: widget.user,
+                        user: userData,
                         doctor: docData,
                       );
                     }

@@ -66,7 +66,8 @@ class Auth {
                       'Please send an ambulance ASAP!',
                       'I need a First Aid Now!'
                     ],
-                    'fcmToken': fcmToken
+                    'fcmToken': fcmToken,
+                    'type': 'USER'
                   },
                 );
               },
@@ -187,7 +188,8 @@ class Auth {
                       'We are sending an Ambulance!',
                       'We are committed to help you in any way possible.'
                     ],
-                    'fcmToken': fcmToken
+                    'fcmToken': fcmToken,
+                    'type': 'ADMIN'
                   },
                 );
               },

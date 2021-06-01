@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:swinger_iot/style/fonts.dart';
 
 import '../models/user.dart';
 import '../widgets/messages.dart';
@@ -69,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue, width: 1),
+                  border: Border.all(color: Colors.greenAccent, width: 1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +86,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     IconButton(
                       iconSize: 20,
-                      icon: Icon(Icons.send, color: Colors.blue),
+                      icon: Icon(Icons.send, color: Colors.greenAccent),
                       onPressed: () {
                         if (messageController.text.isNotEmpty) {
                           if (widget.user.type == 'ADMIN') {
@@ -151,7 +152,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color: Colors.blue,
+                        color: Colors.greenAccent,
                       ),
                       child: IconButton(
                         icon: (showOptions)
@@ -326,7 +327,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 _showAddOptionDialog(context);
               }
             },
-            child: Text(chatOptions[item]),
+            child: Text(
+              chatOptions[item],
+              style: body2Bl,
+            ),
           ),
         );
       },

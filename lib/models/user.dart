@@ -12,6 +12,7 @@ class UserData {
     userName = map['username'];
     email = map['email'];
     photoUrl = map['photoUrl'];
+    type = map['type'];
   }
 
   Future<void> getUserDetails() async {
