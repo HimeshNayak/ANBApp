@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:location/location.dart';
-import 'package:swinger_iot/screens/patientProfile.dart';
-import 'package:swinger_iot/style/fonts.dart';
-import 'package:swinger_iot/widgets/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../models/user.dart';
 import '../screens/chatScreen.dart';
 import '../screens/doctorListScreen.dart';
 import '../services/auth.dart';
 import '../widgets/commonWidgets.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../screens/patientProfile.dart';
+import '../style/fonts.dart';
+import '../widgets/widgets.dart';
+import '../services/fcm.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import '../main.dart';
@@ -128,6 +129,14 @@ class _HomeUserState extends State<HomeUser> {
                                   isLoading = true;
                                 },
                               );
+
+                              sendNotification(
+                                  //TODO widget.doctor.fcmToken,
+                                  '',
+                                  widget.doctor.userName.toString(),
+                                  widget.user.userName.toString(),
+                                  '${widget.user.userName} needs your help!');
+
                               await new Location()
                                   .getLocation()
                                   .timeout(Duration(milliseconds: 5000))

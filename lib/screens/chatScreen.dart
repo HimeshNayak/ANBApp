@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:swinger_iot/services/fcm.dart';
 import 'package:swinger_iot/style/fonts.dart';
 
 import '../models/user.dart';
@@ -89,6 +90,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       icon: Icon(Icons.send, color: Colors.greenAccent),
                       onPressed: () {
                         if (messageController.text.isNotEmpty) {
+                          sendNotification(
+                              '',
+                              widget.user.userName.toString(),
+                              widget.otherUser.toString(),
+                              messageController.value.text.toString());
+
                           if (widget.user.type == 'ADMIN') {
                             FirebaseFirestore.instance
                                 .collection('admins')
