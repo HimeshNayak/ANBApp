@@ -91,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () {
                         if (messageController.text.isNotEmpty) {
                           sendNotification(
-                              '',
+                              widget.otherUser.fcmToken.toString(),
                               widget.user.userName.toString(),
                               widget.otherUser.toString(),
                               messageController.value.text.toString());

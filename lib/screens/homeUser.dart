@@ -131,8 +131,7 @@ class _HomeUserState extends State<HomeUser> {
                               );
 
                               sendNotification(
-                                  //TODO widget.doctor.fcmToken,
-                                  '',
+                                  widget.doctor.fcmToken.toString(),
                                   widget.doctor.userName.toString(),
                                   widget.user.userName.toString(),
                                   '${widget.user.userName} needs your help!');
