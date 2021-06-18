@@ -29,15 +29,6 @@ class Auth {
 
     final User? user = userCredential.user;
     if (user != null) {
-      await SharedPreferences.getInstance().then(
-        (_prefs) {
-          _prefs.setString('userName', user.displayName.toString());
-          _prefs.setString('email', user.email.toString());
-          _prefs.setString('uid', user.uid.toString());
-          _prefs.setString('photoUrl', user.photoURL.toString());
-          _prefs.setString('type', 'USER');
-        },
-      );
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -49,25 +40,35 @@ class Auth {
             FirebaseMessaging.instance.getToken().then(
               (token) async {
                 fcmToken = token;
-              },
-            ).whenComplete(
-              () {
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(user.uid)
-                    .set(
-                  {
-                    'username': user.displayName.toString(),
-                    'email': user.email.toString(),
-                    'uid': user.uid.toString(),
-                    'photoUrl': user.photoURL.toString(),
-                    'doctorUid': '',
-                    'chatOptions': [
-                      'Please send an ambulance ASAP!',
-                      'I need a First Aid Now!'
-                    ],
-                    'fcmToken': fcmToken,
-                    'type': 'USER'
+                await SharedPreferences.getInstance().then(
+                  (_prefs) {
+                    _prefs.setString('userName', user.displayName.toString());
+                    _prefs.setString('email', user.email.toString());
+                    _prefs.setString('uid', user.uid.toString());
+                    _prefs.setString('photoUrl', user.photoURL.toString());
+                    _prefs.setString('type', 'USER');
+                    _prefs.setString('fcmToken', fcmToken.toString());
+                  },
+                ).whenComplete(
+                  () {
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(user.uid)
+                        .set(
+                      {
+                        'username': user.displayName.toString(),
+                        'email': user.email.toString(),
+                        'uid': user.uid.toString(),
+                        'photoUrl': user.photoURL.toString(),
+                        'doctorUid': '',
+                        'chatOptions': [
+                          'Please send an ambulance ASAP!',
+                          'I need a First Aid Now!'
+                        ],
+                        'fcmToken': fcmToken,
+                        'type': 'USER'
+                      },
+                    );
                   },
                 );
               },
@@ -77,15 +78,25 @@ class Auth {
             FirebaseMessaging.instance.getToken().then(
               (token) async {
                 fcmToken = token;
-              },
-            ).whenComplete(
-              () => {
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(user.uid)
-                    .update(
-                  {'fcmToken': fcmToken},
-                )
+                await SharedPreferences.getInstance().then(
+                  (_prefs) {
+                    _prefs.setString('userName', user.displayName.toString());
+                    _prefs.setString('email', user.email.toString());
+                    _prefs.setString('uid', user.uid.toString());
+                    _prefs.setString('photoUrl', user.photoURL.toString());
+                    _prefs.setString('type', 'USER');
+                    _prefs.setString('fcmToken', fcmToken.toString());
+                  },
+                ).whenComplete(
+                  () {
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(user.uid)
+                        .update(
+                      {'fcmToken': fcmToken},
+                    );
+                  },
+                );
               },
             );
           }
@@ -110,30 +121,32 @@ class Auth {
         (value) async {
           if (value.exists) {
             Map<dynamic, dynamic>? map = value.data();
-            await SharedPreferences.getInstance().then(
-              (_prefs) {
-                if (map != null) {
-                  _prefs.setString('userName', map['username'].toString());
-                  _prefs.setString('email', user.email.toString());
-                  _prefs.setString('uid', user.uid.toString());
-                  _prefs.setString('photoUrl', map['photoUrl'].toString());
-                  _prefs.setString('type', 'ADMIN');
-                }
-              },
-            );
             String? fcmToken;
             await FirebaseMessaging.instance.getToken().then(
               (token) async {
                 print(token);
                 fcmToken = token;
-              },
-            ).whenComplete(
-              () {
-                FirebaseFirestore.instance
-                    .collection('admins')
-                    .doc(user.uid)
-                    .update(
-                  {'fcmToken': fcmToken},
+
+                await SharedPreferences.getInstance().then(
+                  (_prefs) {
+                    if (map != null) {
+                      _prefs.setString('userName', map['username'].toString());
+                      _prefs.setString('email', user.email.toString());
+                      _prefs.setString('uid', user.uid.toString());
+                      _prefs.setString('photoUrl', map['photoUrl'].toString());
+                      _prefs.setString('type', 'ADMIN');
+                      _prefs.setString('fcmToken', fcmToken.toString());
+                    }
+                  },
+                ).whenComplete(
+                  () {
+                    FirebaseFirestore.instance
+                        .collection('admins')
+                        .doc(user.uid)
+                        .update(
+                      {'fcmToken': fcmToken},
+                    );
+                  },
                 );
               },
             );
@@ -149,16 +162,6 @@ class Auth {
         email: email, password: password);
     User? user = userCredential.user;
     if (user != null) {
-      await SharedPreferences.getInstance().then(
-        (_prefs) {
-          _prefs.setString('userName', 'Enter Name');
-          _prefs.setString('email', user.email.toString());
-          _prefs.setString('uid', user.uid.toString());
-          _prefs.setString('photoUrl',
-              'https://webstockreview.net/images/clipart-doctor-person-1.png');
-          _prefs.setString('type', 'ADMIN');
-        },
-      );
       await FirebaseFirestore.instance
           .collection('admins')
           .doc(user.uid)
@@ -170,26 +173,37 @@ class Auth {
             FirebaseMessaging.instance.getToken().then(
               (token) async {
                 fcmToken = token;
-              },
-            ).whenComplete(
-              () {
-                FirebaseFirestore.instance
-                    .collection('admins')
-                    .doc(user.uid)
-                    .set(
-                  {
-                    'username': 'Enter Name',
-                    'email': user.email.toString(),
-                    'uid': user.uid.toString(),
-                    'photoUrl':
-                        'https://webstockreview.net/images/clipart-doctor-person-1.png',
-                    'patients': [],
-                    'chatOptions': [
-                      'We are sending an Ambulance!',
-                      'We are committed to help you in any way possible.'
-                    ],
-                    'fcmToken': fcmToken,
-                    'type': 'ADMIN'
+                await SharedPreferences.getInstance().then(
+                  (_prefs) {
+                    _prefs.setString('userName', 'Enter Name');
+                    _prefs.setString('email', user.email.toString());
+                    _prefs.setString('uid', user.uid.toString());
+                    _prefs.setString('photoUrl',
+                        'https://webstockreview.net/images/clipart-doctor-person-1.png');
+                    _prefs.setString('type', 'ADMIN');
+                    _prefs.setString('fcmToken', fcmToken.toString());
+                  },
+                ).whenComplete(
+                  () {
+                    FirebaseFirestore.instance
+                        .collection('admins')
+                        .doc(user.uid)
+                        .set(
+                      {
+                        'username': 'Enter Name',
+                        'email': user.email.toString(),
+                        'uid': user.uid.toString(),
+                        'photoUrl':
+                            'https://webstockreview.net/images/clipart-doctor-person-1.png',
+                        'patients': [],
+                        'chatOptions': [
+                          'We are sending an Ambulance!',
+                          'We are committed to help you in any way possible.'
+                        ],
+                        'fcmToken': fcmToken,
+                        'type': 'ADMIN'
+                      },
+                    );
                   },
                 );
               },
