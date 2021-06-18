@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData {
-  String? userName, email, uid, photoUrl, type;
+  String? userName, email, uid, photoUrl, type, fcmToken;
 
   UserData() {
     getUserDetails();
@@ -13,6 +13,7 @@ class UserData {
     email = map['email'];
     photoUrl = map['photoUrl'];
     type = map['type'];
+    fcmToken = map['fcmToken'];
   }
 
   Future<void> getUserDetails() async {
@@ -22,6 +23,7 @@ class UserData {
       uid = _prefs.getString('uid');
       photoUrl = _prefs.getString('photoUrl');
       type = _prefs.getString('type') ?? 'LOGIN';
+      fcmToken = _prefs.getString('fcmToken');
     });
     return;
   }
