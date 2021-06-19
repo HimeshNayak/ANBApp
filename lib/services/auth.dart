@@ -43,55 +43,50 @@ class Auth {
           .collection('users')
           .doc(user.uid)
           .get()
-          .then(
-        (value) {
-          if (!value.exists) {
-            String? fcmToken;
-            FirebaseMessaging.instance.getToken().then(
-              (token) async {
-                fcmToken = token;
-              },
-            ).whenComplete(
-              () {
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(user.uid)
-                    .set(
-                  {
-                    'username': user.displayName.toString(),
-                    'email': user.email.toString(),
-                    'uid': user.uid.toString(),
-                    'photoUrl': user.photoURL.toString(),
-                    'doctorUid': '',
-                    'chatOptions': [
-                      'Please send an ambulance ASAP!',
-                      'I need a First Aid Now!'
-                    ],
-                    'fcmToken': fcmToken,
-                    'type': 'USER'
-                  },
-                );
-              },
-            );
-          } else {
-            String? fcmToken;
-            FirebaseMessaging.instance.getToken().then(
-              (token) async {
-                fcmToken = token;
-              },
-            ).whenComplete(
-              () => {
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(user.uid)
-                    .update(
-                  {'fcmToken': fcmToken},
-                )
-              },
-            );
-          }
-        },
-      );
+          .then((value) {
+        if (!value.exists) {
+          String? fcmToken;
+          FirebaseMessaging.instance.getToken().then(
+            (token) {
+              fcmToken = token;
+            },
+          ).whenComplete(
+            () {
+              FirebaseFirestore.instance.collection('users').doc(user.uid).set(
+                {
+                  'username': user.displayName.toString(),
+                  'email': user.email.toString(),
+                  'uid': user.uid.toString(),
+                  'photoUrl': user.photoURL.toString(),
+                  'doctorUid': '',
+                  'chatOptions': [
+                    'Please send an ambulance ASAP!',
+                    'I need a First Aid Now!'
+                  ],
+                  'fcmToken': fcmToken,
+                  'type': 'USER'
+                },
+              );
+            },
+          );
+        } else {
+          String? fcmToken;
+          FirebaseMessaging.instance.getToken().then(
+            (token) {
+              fcmToken = token;
+            },
+          ).whenComplete(
+            () {
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid)
+                  .update(
+                {'fcmToken': fcmToken},
+              );
+            },
+          );
+        }
+      });
     }
     return user;
   }
