@@ -36,6 +36,7 @@ class Auth {
           _prefs.setString('uid', user.uid.toString());
           _prefs.setString('photoUrl', user.photoURL.toString());
           _prefs.setString('type', 'USER');
+          // not adding users fcm token to the shared preferences as it is not needed here
         },
       );
       await FirebaseFirestore.instance
@@ -118,6 +119,7 @@ class Auth {
                   _prefs.setString('uid', user.uid.toString());
                   _prefs.setString('photoUrl', map['photoUrl'].toString());
                   _prefs.setString('type', 'ADMIN');
+                  // not adding users fcm token to the shared preferences as it is not needed here
                 }
               },
             );
@@ -157,6 +159,7 @@ class Auth {
           _prefs.setString('photoUrl',
               'https://webstockreview.net/images/clipart-doctor-person-1.png');
           _prefs.setString('type', 'ADMIN');
+          // not adding users fcm token to the shared preferences as it is not needed here
         },
       );
       await FirebaseFirestore.instance
