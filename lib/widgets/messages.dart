@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../screens/mapScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Widget spacingWidget(
     {required BuildContext context,
@@ -45,28 +44,35 @@ Widget spacingWidget(
 
 Widget locationMessage(
     BuildContext context, Map<dynamic, dynamic> map, bool myMessage) {
+  void launchGoogleMaps(double lat, double lng) async {
+    var url = 'google.navigation:q=${lat.toString()},${lng.toString()}';
+    var fallbackUrl =
+        'https://www.google.com/maps/search/?api=1&query=${lat.toString()},${lng.toString()}';
+    try {
+      bool launched =
+          await launch(url, forceSafariVC: false, forceWebView: false);
+      if (!launched) {
+        await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+      }
+    } catch (e) {
+      await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+    }
+  }
+
   DateTime dateTime = map['timestamp'].toDate();
-  print(map['latitude']);
-  print(map['longitude']);
   return spacingWidget(
       context: context,
       myMessage: myMessage,
       widget: Column(
         children: <Widget>[
-          OutlinedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MapScreen(
-                    latitude: map['latitude'],
-                    longitude: map['longitude'],
-                  ),
+          (myMessage)
+              ? Text('Your location has been sent to the doctor.')
+              : TextButton(
+                  onPressed: () {
+                    launchGoogleMaps(map['latitude'], map['longitude']);
+                  },
+                  child: Text('SOS Tapped\nShow Directions'),
                 ),
-              );
-            },
-            child: Text('Show Directions'),
-          ),
         ],
       ),
       time: '${dateTime.hour}:${dateTime.minute}');
