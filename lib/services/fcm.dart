@@ -27,11 +27,13 @@ Future<void> sendNotification(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
       headers: <String, String>{
         'Content-Type': 'application/json',
-        'Authorization': 'key='
+        'Authorization':
+            'key=AAAA_755Kp8:APA91bFb_iBgtg2Prh7UGqWrXTyYpyJJwLfRabFYdK4Z6Un8RMEAuu0lefkrScMCtqLQGuJfe1pyU7VZ6arNCYnE2yVT7ICx3vDLKPki7cSWN-EE9M1s-u5GEB4xPk0P_k95ul7Znkj3'
       },
       body: constructFCMPayload(token, from, receiver, message),
     )
         .then((value) {
+      print(constructFCMPayload(token, from, receiver, message));
       print(value.body.toString());
     }).catchError((e) {
       print(e);

@@ -93,7 +93,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           sendNotification(
                               widget.otherUser.fcmToken.toString(),
                               widget.user.userName.toString(),
-                              widget.otherUser.toString(),
+                              widget.otherUser.userName.toString(),
                               messageController.value.text.toString());
 
                           if (widget.user.type == 'ADMIN') {

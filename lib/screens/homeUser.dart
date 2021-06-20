@@ -132,8 +132,8 @@ class _HomeUserState extends State<HomeUser> {
 
                               sendNotification(
                                   widget.doctor.fcmToken.toString(),
-                                  widget.doctor.userName.toString(),
                                   widget.user.userName.toString(),
+                                  widget.doctor.userName.toString(),
                                   '${widget.user.userName} needs your help!');
 
                               await new Location()
