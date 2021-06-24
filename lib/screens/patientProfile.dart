@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swinger_iot/screens/editProfile.dart';
 import 'package:swinger_iot/style/fonts.dart';
 import 'package:swinger_iot/widgets/commonWidgets.dart';
 import 'package:swinger_iot/widgets/widgets.dart';
@@ -12,7 +13,9 @@ import '../main.dart';
 class PatientProfile extends StatefulWidget {
   final Auth auth;
   final UserData user;
-  PatientProfile({required this.auth, required this.user});
+  final bool isAdmin;
+  PatientProfile(
+      {required this.auth, required this.user, required this.isAdmin});
 
   @override
   _PatientProfileState createState() => _PatientProfileState();
@@ -72,9 +75,29 @@ class _PatientProfileState extends State<PatientProfile> {
                     height: 10,
                   ),
                   Center(
-                    child: Text(
-                      widget.user.userName!,
-                      style: heading1Bl,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.user.userName!,
+                          style: heading1Bl,
+                        ),
+                        Visibility(
+                          visible: widget.isAdmin,
+                          child: IconButton(
+                            icon: Icon(Icons.edit, color: Colors.black),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditProfile(user: widget.user),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
