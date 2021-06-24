@@ -113,44 +113,49 @@ class _PatientProfileState extends State<PatientProfile> {
                   ),
                   Visibility(
                     visible: showEditField,
-                    child: OutlinedButton(
-                      child: Text('Save'),
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
+                    child: button1('Save', () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      if (nameController.value.text.isNotEmpty) {
+                        await SharedPreferences.getInstance().then((_prefs) {
+                          _prefs.setString(
+                              'userName', nameController.value.text);
                         });
-                        if (nameController.value.text.isNotEmpty) {
-                          await SharedPreferences.getInstance().then((_prefs) {
-                            _prefs.setString(
-                                'userName', nameController.value.text);
-                          });
-                          await FirebaseFirestore.instance
-                              .collection((widget.isAdmin) ? 'admins' : 'users')
-                              .doc(widget.user.uid)
-                              .update({
-                            'username': nameController.value.text.toString(),
-                          }).whenComplete(() {
-                            setState(() {
-                              isLoading = false;
-                              showEditField = false;
-                            });
-                            Navigator.pop(context);
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RootPage(
-                                      auth: widget.auth, user: widget.user),
-                                ),
-                                (route) => false);
-                          });
-                        } else {
+                        await FirebaseFirestore.instance
+                            .collection((widget.isAdmin) ? 'admins' : 'users')
+                            .doc(widget.user.uid)
+                            .update({
+                          'username': nameController.value.text.toString(),
+                        }).whenComplete(() {
                           setState(() {
                             isLoading = false;
+                            showEditField = false;
                           });
-                          print('Name is empty!!! Please enter your name');
-                        }
-                      },
-                    ),
+                          Navigator.pop(context);
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RootPage(
+                                    auth: widget.auth, user: widget.user),
+                              ),
+                              (route) => false);
+                        });
+                      } else {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        print('Name is empty!!! Please enter your name');
+                      }
+                    }, Colors.greenAccent, context),
+                  ),
+                  Visibility(
+                    visible: showEditField,
+                    child: button1('Cancel', () {
+                      setState(() {
+                        showEditField = false;
+                      });
+                    }, Colors.red, context),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
