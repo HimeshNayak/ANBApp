@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swinger_iot/screens/editProfile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swinger_iot/style/fonts.dart';
 import 'package:swinger_iot/widgets/commonWidgets.dart';
 import 'package:swinger_iot/widgets/widgets.dart';
@@ -23,6 +24,8 @@ class PatientProfile extends StatefulWidget {
 
 class _PatientProfileState extends State<PatientProfile> {
   bool isLoading = false;
+  bool showEditField = false;
+  TextEditingController nameController = new TextEditingController();
 
   logoutFn() {
     setState(
@@ -78,26 +81,75 @@ class _PatientProfileState extends State<PatientProfile> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          widget.user.userName!,
-                          style: heading1Bl,
-                        ),
                         Visibility(
-                          visible: widget.isAdmin,
-                          child: IconButton(
-                            icon: Icon(Icons.edit, color: Colors.black),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      EditProfile(user: widget.user),
-                                ),
-                              );
-                            },
+                          visible: !showEditField,
+                          child: Text(
+                            widget.user.userName!,
+                            style: heading1Bl,
                           ),
                         ),
+                        Visibility(
+                          visible: showEditField,
+                          child: Container(
+                            width: 200,
+                            child: TextField(
+                              controller: nameController,
+                              decoration: InputDecoration(
+                                hintText: widget.user.userName!,
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit, color: Colors.black),
+                          onPressed: () {
+                            setState(() {
+                              showEditField = true;
+                            });
+                          },
+                        ),
                       ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: showEditField,
+                    child: OutlinedButton(
+                      child: Text('Save'),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        if (nameController.value.text.isNotEmpty) {
+                          await SharedPreferences.getInstance().then((_prefs) {
+                            _prefs.setString(
+                                'userName', nameController.value.text);
+                          });
+                          await FirebaseFirestore.instance
+                              .collection((widget.isAdmin) ? 'admins' : 'users')
+                              .doc(widget.user.uid)
+                              .update({
+                            'username': nameController.value.text.toString(),
+                          }).whenComplete(() {
+                            setState(() {
+                              isLoading = false;
+                              showEditField = false;
+                            });
+                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RootPage(
+                                      auth: widget.auth, user: widget.user),
+                                ),
+                                (route) => false);
+                          });
+                        } else {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          print('Name is empty!!! Please enter your name');
+                        }
+                      },
                     ),
                   ),
                   Padding(
