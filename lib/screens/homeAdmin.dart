@@ -139,6 +139,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                         builder: (context) => PatientProfile(
                           auth: widget.auth,
                           user: widget.user,
+                          isAdmin: true,
                         ),
                       ),
                     );

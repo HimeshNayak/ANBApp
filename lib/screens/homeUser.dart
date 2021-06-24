@@ -238,6 +238,7 @@ class _HomeUserState extends State<HomeUser> {
                       builder: (context) => PatientProfile(
                         auth: widget.auth,
                         user: widget.user,
+                        isAdmin: false,
                       ),
                     ),
                   );
