@@ -165,7 +165,10 @@ class _RootPageState extends State<RootPage> {
                     .get(),
                 builder: (context, AsyncSnapshot<DocumentSnapshot> snap) {
                   if (snap.hasData) {
-                    return HomeAdmin(auth: widget.auth, user: widget.user);
+                    Map<String, dynamic> userMap =
+                        snap.data?.data() as Map<String, dynamic>;
+                    UserData userData = UserData.setFields(userMap);
+                    return HomeAdmin(auth: widget.auth, user: userData);
                   }
                   return buildingScreenWidget(context, Colors.white);
                 },
