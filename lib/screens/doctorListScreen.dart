@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:swinger_iot/widgets/commonWidgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../models/user.dart';
 import '../services/auth.dart';
+import '../widgets/commonWidgets.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import '../main.dart';

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:swinger_iot/services/fcm.dart';
-import 'package:swinger_iot/style/fonts.dart';
 
 import '../models/user.dart';
+import '../services/fcm.dart';
+import '../style/fonts.dart';
 import '../widgets/messages.dart';
 
 class ChatScreen extends StatefulWidget {
   final UserData user, otherUser;
   final String? sosMessage;
+
   ChatScreen({required this.user, required this.otherUser, this.sosMessage});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -17,6 +19,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   bool showOptions = false;
   TextEditingController messageController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

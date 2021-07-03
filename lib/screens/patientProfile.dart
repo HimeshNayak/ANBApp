@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:swinger_iot/style/fonts.dart';
-import 'package:swinger_iot/widgets/commonWidgets.dart';
-import 'package:swinger_iot/widgets/widgets.dart';
 
 import '../models/user.dart';
 import '../services/auth.dart';
+import '../style/fonts.dart';
+import '../widgets/commonWidgets.dart';
+import '../widgets/widgets.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import '../main.dart';
@@ -15,6 +15,7 @@ class PatientProfile extends StatefulWidget {
   final Auth auth;
   final UserData user;
   final bool isAdmin;
+
   PatientProfile(
       {required this.auth, required this.user, required this.isAdmin});
 

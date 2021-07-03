@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:swinger_iot/style/fonts.dart';
-import 'package:swinger_iot/widgets/widgets.dart';
 
 import '../models/user.dart';
 import '../screens/patientProfile.dart';
 import '../screens/chatScreen.dart';
 import '../services/auth.dart';
+import '../style/fonts.dart';
 import '../widgets/commonWidgets.dart';
 import '../widgets/profileTile.dart';
+import '../widgets/widgets.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import '../main.dart';
@@ -16,13 +16,16 @@ import '../main.dart';
 class HomeAdmin extends StatefulWidget {
   final Auth auth;
   final UserData user;
+
   HomeAdmin({required this.auth, required this.user});
+
   @override
   _HomeAdminState createState() => _HomeAdminState();
 }
 
 class _HomeAdminState extends State<HomeAdmin> {
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

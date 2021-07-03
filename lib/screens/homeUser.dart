@@ -7,11 +7,11 @@ import '../models/user.dart';
 import '../screens/chatScreen.dart';
 import '../screens/doctorListScreen.dart';
 import '../services/auth.dart';
-import '../widgets/commonWidgets.dart';
+import '../services/fcm.dart';
 import '../screens/patientProfile.dart';
 import '../style/fonts.dart';
+import '../widgets/commonWidgets.dart';
 import '../widgets/widgets.dart';
-import '../services/fcm.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import '../main.dart';
@@ -20,7 +20,9 @@ class HomeUser extends StatefulWidget {
   final Auth auth;
   final UserData user;
   final UserData doctor;
+
   HomeUser({required this.auth, required this.user, required this.doctor});
+
   @override
   _HomeUserState createState() => _HomeUserState();
 }

@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:swinger_iot/style/fonts.dart';
-import 'package:swinger_iot/widgets/widgets.dart';
 
 import '../models/user.dart';
 import '../screens/errorPage.dart';
 import '../services/auth.dart';
-import 'package:swinger_iot/widgets/commonWidgets.dart';
+import '../style/fonts.dart';
+import '../widgets/commonWidgets.dart';
+import '../widgets/widgets.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import '../main.dart';
@@ -15,7 +15,9 @@ import '../main.dart';
 class LoginPage extends StatefulWidget {
   final Auth auth;
   final UserData userData;
+
   LoginPage({required this.auth, required this.userData});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -188,6 +190,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   late PageController _controller;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

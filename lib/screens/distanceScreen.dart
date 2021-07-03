@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 

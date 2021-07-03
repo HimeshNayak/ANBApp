@@ -4,7 +4,9 @@ import '../models/user.dart';
 
 class DoctorProfile extends StatefulWidget {
   final UserData doctor;
+
   DoctorProfile({required this.doctor});
+
   @override
   _DoctorProfileState createState() => _DoctorProfileState();
 }
