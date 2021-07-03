@@ -40,20 +40,22 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Stack(
           children: [
             Container(
-              child: FutureBuilder(
-                future: (widget.user.type == 'ADMIN')
+              child: StreamBuilder(
+                stream: (widget.user.type == 'ADMIN')
                     ? FirebaseFirestore.instance
                         .collection('admins')
                         .doc(widget.user.uid)
                         .collection('chats')
                         .doc(widget.otherUser.uid)
                         .get()
+                        .asStream()
                     : FirebaseFirestore.instance
                         .collection('admins')
                         .doc(widget.otherUser.uid)
                         .collection('chats')
                         .doc(widget.user.uid)
-                        .get(),
+                        .get()
+                        .asStream(),
                 builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (snapshot.hasData) {
                     return chats(
