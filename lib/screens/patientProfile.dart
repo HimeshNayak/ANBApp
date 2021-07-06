@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/user.dart';
 import '../services/auth.dart';
@@ -59,7 +63,35 @@ class _PatientProfileState extends State<PatientProfile> {
     );
   }
 
-  Future<void> openCamera() async {}
+  PickedFile? _pickedFile;
+  PickedFile? get pickedFile => _pickedFile;
+  String? _imageName = "";
+  String? get imageName => _imageName;
+  File? _filePath;
+  File? get filePath => _filePath;
+
+  Future<void> openCamera() async {
+    final imagePicker = ImagePicker();
+
+    await Permission.photos.request();
+
+    var permissionStatus = await Permission.photos.status;
+    if (permissionStatus.isGranted) {
+      _pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+      if (_pickedFile != null) {
+        _filePath = File(_pickedFile?.path as String);
+        _imageName = _filePath?.uri.path.split('/').last;
+        print(_filePath);
+        print(_imageName);
+      } else {
+        print("Please pick Image");
+      }
+    } else {
+      print('Permission Granted');
+    }
+  }
+
+  Future<void> sendImageToFirebase() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +130,10 @@ class _PatientProfileState extends State<PatientProfile> {
                                   isLoading = true;
                                 });
                                 openCamera().whenComplete(() {
-                                  setState(() {
-                                    isLoading = false;
+                                  sendImageToFirebase().whenComplete(() {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                   });
                                 });
                               },
