@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,6 +59,8 @@ class _PatientProfileState extends State<PatientProfile> {
     );
   }
 
+  Future<void> openCamera() async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,9 +74,39 @@ class _PatientProfileState extends State<PatientProfile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Center(
-                    child: CircleAvatar(
-                      radius: 70,
-                      backgroundImage: NetworkImage(widget.user.photoUrl!),
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 70,
+                          backgroundImage: NetworkImage(widget.user.photoUrl!),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.greenAccent,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                openCamera().whenComplete(() {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                });
+                              },
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   SizedBox(
