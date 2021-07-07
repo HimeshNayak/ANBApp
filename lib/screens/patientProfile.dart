@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fs;
 
 import '../models/user.dart';
 import '../services/auth.dart';
@@ -65,10 +65,11 @@ class _PatientProfileState extends State<PatientProfile> {
 
   PickedFile? _pickedFile;
   PickedFile? get pickedFile => _pickedFile;
-  String? _imageName = "";
+  String? _imageName = '';
   String? get imageName => _imageName;
   File? _filePath;
   File? get filePath => _filePath;
+  String? uploadedImageUrl = '';
 
   Future<void> openCamera() async {
     final imagePicker = ImagePicker();
@@ -91,7 +92,34 @@ class _PatientProfileState extends State<PatientProfile> {
     }
   }
 
-  Future<void> sendImageToFirebase() async {}
+  Future<fs.UploadTask?> sendImageToFirebase() async {
+    if (_pickedFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No file was selected'),
+        ),
+      );
+      return null;
+    }
+
+    fs.UploadTask uploadTask;
+
+    // Create a Reference to the file
+    fs.Reference ref = fs.FirebaseStorage.instance
+        .ref()
+        .child(widget.user.email.toString())
+        .child('/$_imageName');
+
+    final metadata = fs.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': _pickedFile?.path as String});
+
+    uploadTask = ref.putFile(File(_pickedFile?.path as String), metadata);
+
+    print('uploading completed!!!');
+
+    return Future.value(uploadTask);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,9 +158,15 @@ class _PatientProfileState extends State<PatientProfile> {
                                   isLoading = true;
                                 });
                                 openCamera().whenComplete(() {
-                                  sendImageToFirebase().whenComplete(() {
-                                    setState(() {
-                                      isLoading = false;
+                                  sendImageToFirebase().then((value) {
+                                    value?.then((v) {
+                                      v.ref.getDownloadURL().then((value) {
+                                        print(value);
+                                      }).whenComplete(() {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                      });
                                     });
                                   });
                                 });
