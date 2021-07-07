@@ -116,9 +116,17 @@ class _PatientProfileState extends State<PatientProfile> {
 
     uploadTask = ref.putFile(File(_pickedFile?.path as String), metadata);
 
-    print('uploading completed!!!');
-
     return Future.value(uploadTask);
+  }
+
+  Future<void> updateImageUrl(String url) async {
+    await FirebaseFirestore.instance
+        .collection((widget.isAdmin) ? 'admins' : 'users')
+        .doc(widget.user.uid)
+        .update({'photoUrl': url});
+    await SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('photoUrl', url);
+    });
   }
 
   @override
@@ -161,10 +169,20 @@ class _PatientProfileState extends State<PatientProfile> {
                                   sendImageToFirebase().then((value) {
                                     value?.then((v) {
                                       v.ref.getDownloadURL().then((value) {
-                                        print(value);
-                                      }).whenComplete(() {
-                                        setState(() {
-                                          isLoading = false;
+                                        updateImageUrl(value).whenComplete(() {
+                                          setState(() {
+                                            widget.user.photoUrl = value;
+                                            isLoading = false;
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RootPage(
+                                                          auth: widget.auth,
+                                                          user: widget.user),
+                                                ),
+                                                (route) => false);
+                                          });
                                         });
                                       });
                                     });
