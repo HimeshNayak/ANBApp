@@ -68,9 +68,31 @@ class UploadPhoto {
     await FirebaseFirestore.instance
         .collection((isAdmin) ? 'admins' : 'users')
         .doc(uid)
-        .update({'photoUrl': url});
+        .get()
+        .then((value) {
+      String url = value.data()!['photoUrl'];
+      deletePreviousPhoto(url).whenComplete(() async {
+        await FirebaseFirestore.instance
+            .collection((isAdmin) ? 'admins' : 'users')
+            .doc(uid)
+            .update({'photoUrl': url});
+      });
+    });
     await SharedPreferences.getInstance().then((prefs) {
       prefs.setString('photoUrl', url);
     });
+  }
+
+  Future<void> deletePreviousPhoto(String url) async {
+    try {
+      return await fs.FirebaseStorage.instance
+          .refFromURL(url)
+          .delete()
+          .catchError((e) {
+        print('couldn\'t delete ' + e.toString());
+      });
+    } catch (e) {
+      print('error occurred!');
+    }
   }
 }
