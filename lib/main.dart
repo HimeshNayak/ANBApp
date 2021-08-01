@@ -100,7 +100,7 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SWINGER IOT',
+      title: 'ANB',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         primaryColor: Colors.greenAccent,

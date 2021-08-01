@@ -38,21 +38,21 @@ flutter:
 
   uses-material-design: true
 
-   assets:
-     - assets/images/seniors.png
+  assets:
+    - assets/images/seniors.png
 
-   fonts:
-     - family: AlegreyaSans
-       - fonts:
-           - asset: assets/fonts/AlegreyaSans-Regular.ttf
-     - family: Poppins
-       fonts:
-         - asset: assets/fonts/Poppins-Regular.ttf
-         - asset: assets/fonts/Poppins-Light.ttf
-         - asset: assets/fonts/Poppins-Medium.ttf
-         - asset: assets/fonts/Poppins-Bold.ttf
-     - family: Roboto
-       fonts:
-         - asset: assets/fonts/Roboto-Regular.ttf
-         - asset: assets/fonts/Roboto-Medium.ttf
-         - asset: assets/fonts/Roboto-Bold.ttf
+  fonts:
+   - family: AlegreyaSans
+     fonts:
+       - asset: assets/fonts/AlegreyaSans-Regular.ttf
+   - family: Poppins
+     fonts:
+       - asset: assets/fonts/Poppins-Regular.ttf
+       - asset: assets/fonts/Poppins-Light.ttf
+       - asset: assets/fonts/Poppins-Medium.ttf
+       - asset: assets/fonts/Poppins-Bold.ttf
+   - family: Roboto
+     fonts:
+       - asset: assets/fonts/Roboto-Regular.ttf
+       - asset: assets/fonts/Roboto-Medium.ttf
+       - asset: assets/fonts/Roboto-Bold.ttf
