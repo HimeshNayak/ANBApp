@@ -195,187 +195,184 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Color(0xFF9BE5AA),
       body: SafeArea(
         child: Stack(
           children: <Widget>[
             Container(
               width: size.width,
               height: size.height,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: <Color>[
-                    Colors.white,
-                    Colors.greenAccent.shade200,
-                  ],
-                  tileMode: TileMode.repeated,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 50),
-                child: Text(
-                  'SWINGER LAB',
-                  style: heading1Bl,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: size.width,
-                height:
-                    (pageIndex == 0) ? size.height * 0.5 : size.height * 0.7,
-                child: (pageIndex == 0)
-                    ? loginBg(
-                        context: context,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: button1(
-                                  'Login as User',
-                                  onSignInGoogleUser,
-                                  Colors.greenAccent,
-                                  context),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: button1('Login as Admin', () {
-                                setState(() {
-                                  pageIndex = 1;
-                                });
-                              }, Colors.greenAccent, context),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: button1('Register as Admin', () {
-                                setState(() {
-                                  pageIndex = 2;
-                                });
-                              }, Colors.greenAccent, context),
-                            ),
-                          ],
-                        ),
-                      )
-                    : (pageIndex == 1)
-                        ? loginBg(
-                            context: context,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: Text('Login as Admin', style: body2Bl),
+              padding: EdgeInsets.fromLTRB(20, 60, 20, 20),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    'AtmaNirbhar',
+                    overflow: TextOverflow.visible,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      height: 1.171875,
+                      fontSize: 35.0,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w700,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      /* letterSpacing: 0.0, */
+                    ),
+                  ),
+                  (pageIndex == 0)
+                      ? Container(
+                          margin: EdgeInsets.symmetric(vertical: 30),
+                          // width: 356.0,
+                          // height: 237.0,
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.zero,
+                                child: Image.asset(
+                                  'assets/images/seniors.png',
+                                  color: null,
+                                  fit: BoxFit.cover,
+                                  // width: 356.0,
+                                  // height: 237.0,
+                                  colorBlendMode: BlendMode.dstATop,
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: textFieldContainer(
-                                    child: TextField(
-                                      controller: emailController,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'EMAIL',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: textFieldContainer(
-                                    child: TextField(
-                                      controller: passwordController,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'PASSWORD',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: button1('Login', onLogin,
-                                      Colors.blueAccent, context),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: button1('Back', () {
-                                    setState(() {
-                                      pageIndex = 0;
-                                    });
-                                  }, Colors.greenAccent, context),
-                                ),
-                              ],
-                            ),
-                          )
-                        : loginBg(
-                            context: context,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: Text('Register for Admin',
-                                      style: body2Bl),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: textFieldContainer(
-                                    child: TextField(
-                                      controller: emailControllerRegister,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'EMAIL',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: textFieldContainer(
-                                    child: TextField(
-                                      controller: passwordControllerRegister,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'PASSWORD',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: button1('Register', onRegister,
-                                      Colors.blueAccent, context),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: button1('Back', () {
-                                    setState(() {
-                                      pageIndex = 0;
-                                    });
-                                  }, Colors.greenAccent, context),
-                                ),
-                              ],
-                            ),
+                              ),
+                              ButtonLoginPage(
+                                text: 'Login as a User',
+                                function: onSignInGoogleUser,
+                              ),
+                              ButtonLoginPage(
+                                text: 'Login as a Doctor',
+                                function: () {
+                                  setState(() {
+                                    pageIndex = 1;
+                                  });
+                                },
+                              ),
+                              ButtonLoginPage(
+                                text: 'Register as a Doctor',
+                                function: () {
+                                  setState(() {
+                                    pageIndex = 2;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
+                        )
+                      : (pageIndex == 1)
+                          ? loginBg(
+                              context: context,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child:
+                                        Text('Login as Admin', style: body2Bl),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: textFieldContainer(
+                                      child: TextField(
+                                        controller: emailController,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'EMAIL',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: textFieldContainer(
+                                      child: TextField(
+                                        controller: passwordController,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'PASSWORD',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: button1('Login', onLogin,
+                                        Colors.blueAccent, context),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: button1('Back', () {
+                                      setState(() {
+                                        pageIndex = 0;
+                                      });
+                                    }, Colors.greenAccent, context),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : loginBg(
+                              context: context,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: Text('Register for Admin',
+                                        style: body2Bl),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: textFieldContainer(
+                                      child: TextField(
+                                        controller: emailControllerRegister,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'EMAIL',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: textFieldContainer(
+                                      child: TextField(
+                                        controller: passwordControllerRegister,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'PASSWORD',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: button1('Register', onRegister,
+                                        Colors.blueAccent, context),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: button1('Back', () {
+                                      setState(() {
+                                        pageIndex = 0;
+                                      });
+                                    }, Colors.greenAccent, context),
+                                  ),
+                                ],
+                              ),
+                            ),
+                ],
               ),
             ),
             overlayProgress(context: context, visible: isLoading),
