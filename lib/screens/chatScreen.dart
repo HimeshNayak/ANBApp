@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -23,7 +24,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Color(0xFF9BE5AA),
         title: Row(
           children: <Widget>[
             CircleAvatar(
@@ -32,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 widget.otherUser.photoUrl.toString(),
               ),
             ),
-            SizedBox(width: 5),
+            SizedBox(width: 20),
             Text(
               widget.otherUser.userName.toString(),
             ),
@@ -43,6 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Stack(
           children: [
             Container(
+              color: Color(0xFF9BE5AA).withOpacity(0.5),
               child: StreamBuilder(
                 stream: (widget.user.type == 'ADMIN')
                     ? FirebaseFirestore.instance
@@ -76,90 +80,108 @@ class _ChatScreenState extends State<ChatScreen> {
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
+                  color: Color(0xFF64B174),
                   border: Border.all(color: Colors.greenAccent, width: 1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width - 130,
-                      child: TextField(
-                        controller: messageController,
-                        decoration: InputDecoration(
-                          hintText: 'Enter Text',
-                        ),
+                      width: MediaQuery.of(context).size.width - 80,
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ),
-                    IconButton(
-                      iconSize: 20,
-                      icon: Icon(Icons.send, color: Colors.greenAccent),
-                      onPressed: () {
-                        if (messageController.text.isNotEmpty) {
-                          sendNotification(
-                              widget.otherUser.fcmToken.toString(),
-                              widget.user.userName.toString(),
-                              widget.otherUser.userName.toString(),
-                              messageController.value.text.toString());
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width - 150,
+                            child: TextField(
+                              controller: messageController,
+                              decoration: InputDecoration(
+                                hintText: 'Enter Text',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            iconSize: 20,
+                            icon:
+                                Icon(Icons.send_outlined, color: Colors.black),
+                            onPressed: () {
+                              if (messageController.text.isNotEmpty) {
+                                sendNotification(
+                                    widget.otherUser.fcmToken.toString(),
+                                    widget.user.userName.toString(),
+                                    widget.otherUser.userName.toString(),
+                                    messageController.value.text.toString());
 
-                          if (widget.user.type == 'ADMIN') {
-                            FirebaseFirestore.instance
-                                .collection('admins')
-                                .doc(widget.user.uid)
-                                .collection('chats')
-                                .doc(widget.otherUser.uid)
-                                .update(
-                              {
-                                'chats': FieldValue.arrayUnion(
-                                  [
+                                if (widget.user.type == 'ADMIN') {
+                                  FirebaseFirestore.instance
+                                      .collection('admins')
+                                      .doc(widget.user.uid)
+                                      .collection('chats')
+                                      .doc(widget.otherUser.uid)
+                                      .update(
                                     {
-                                      'timestamp': DateTime.now(),
-                                      'text': messageController.text.toString(),
-                                      'sender': 'ADMIN',
-                                      'type': 'text',
+                                      'chats': FieldValue.arrayUnion(
+                                        [
+                                          {
+                                            'timestamp': DateTime.now(),
+                                            'text': messageController.text
+                                                .toString(),
+                                            'sender': 'ADMIN',
+                                            'type': 'text',
+                                          },
+                                        ],
+                                      )
                                     },
-                                  ],
-                                )
-                              },
-                            ).whenComplete(
-                              () => setState(
-                                () {
-                                  showOptions = false;
-                                  messageController.clear();
-                                },
-                              ),
-                            );
-                          } else if (widget.user.type == 'USER') {
-                            FirebaseFirestore.instance
-                                .collection('admins')
-                                .doc(widget.otherUser.uid)
-                                .collection('chats')
-                                .doc(widget.user.uid)
-                                .update(
-                              {
-                                'chats': FieldValue.arrayUnion(
-                                  [
+                                  ).whenComplete(
+                                    () => setState(
+                                      () {
+                                        showOptions = false;
+                                        messageController.clear();
+                                      },
+                                    ),
+                                  );
+                                } else if (widget.user.type == 'USER') {
+                                  FirebaseFirestore.instance
+                                      .collection('admins')
+                                      .doc(widget.otherUser.uid)
+                                      .collection('chats')
+                                      .doc(widget.user.uid)
+                                      .update(
                                     {
-                                      'timestamp': DateTime.now(),
-                                      'text': messageController.text.toString(),
-                                      'sender': 'USER',
-                                      'type': 'text',
+                                      'chats': FieldValue.arrayUnion(
+                                        [
+                                          {
+                                            'timestamp': DateTime.now(),
+                                            'text': messageController.text
+                                                .toString(),
+                                            'sender': 'USER',
+                                            'type': 'text',
+                                          },
+                                        ],
+                                      )
                                     },
-                                  ],
-                                )
-                              },
-                            ).whenComplete(
-                              () => setState(
-                                () {
-                                  showOptions = false;
-                                  messageController.clear();
-                                },
-                              ),
-                            );
-                          }
-                        } else {
-                          print('it is empty');
-                        }
-                      },
+                                  ).whenComplete(
+                                    () => setState(
+                                      () {
+                                        showOptions = false;
+                                        messageController.clear();
+                                      },
+                                    ),
+                                  );
+                                }
+                              } else {
+                                print('it is empty');
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       decoration: BoxDecoration(

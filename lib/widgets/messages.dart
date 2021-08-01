@@ -23,7 +23,7 @@ Widget spacingWidget(
               padding: EdgeInsets.all(10),
               child: widget,
               decoration: BoxDecoration(
-                color: (myMessage) ? Colors.greenAccent : Colors.tealAccent,
+                color: (myMessage) ? Color(0xFF9C9999) : Color(0xFF64B174),
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
